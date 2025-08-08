@@ -107,12 +107,35 @@ const Dashboard = () => {
 
   const currentGroup = getCurrentGroup();
 
-  // Add debugging
-  console.log('Dashboard rendering with activeTab:', activeTab);
-  console.log('Current group:', currentGroup);
-
   return (
-    <div className="space-y-3">
+    <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-3">
+      {/* Left Sidebar: Groups */}
+      <aside className="space-y-3">
+        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+          <h2 className="text-sm font-semibold text-white">Sections</h2>
+        </div>
+        <nav className="space-y-2">
+          {Object.entries(tabGroups).map(([groupKey, group]) => (
+            <button
+              key={groupKey}
+              onClick={() => {
+                const firstTab = group.tabs[0];
+                setActiveTab(firstTab.id);
+              }}
+              className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors border ${
+                currentGroup?.key === groupKey
+                  ? 'bg-blue-600 text-white border-blue-500'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-700'
+              }`}
+            >
+              {group.name}
+            </button>
+          ))}
+        </nav>
+      </aside>
+
+      {/* Right Content Area */}
+      <section className="space-y-3">
       {/* Enhanced Header with Current Section */}
       <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
         <div className="flex items-center justify-between">
@@ -131,50 +154,27 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Smart Grouped Navigation */}
-      <div className="space-y-2">
-        {/* Group Navigation */}
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(tabGroups).map(([groupKey, group]) => (
-            <button
-              key={groupKey}
-              onClick={() => {
-                const firstTab = group.tabs[0];
-                setActiveTab(firstTab.id);
-              }}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                currentGroup?.key === groupKey
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white'
-              }`}
-            >
-              {group.name}
-            </button>
-          ))}
+      {/* Tab Navigation within Current Group */}
+      {currentGroup && (
+        <div className="border-b border-gray-700">
+          <nav className="-mb-px flex flex-wrap gap-1 overflow-x-auto" aria-label="Tabs">
+            {currentGroup.tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-2 px-3 border-b-2 font-medium text-sm rounded-t-lg transition-colors whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-400 bg-gray-800'
+                    : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-600 hover:bg-gray-800'
+                }`}
+                title={tab.description}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
         </div>
-
-        {/* Tab Navigation within Current Group */}
-        {currentGroup && (
-          <div className="border-b border-gray-700">
-            <nav className="-mb-px flex space-x-1 overflow-x-auto" aria-label="Tabs">
-              {currentGroup.tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`py-2 px-3 border-b-2 font-medium text-sm rounded-t-lg transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-blue-500 text-blue-400 bg-gray-800'
-                      : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-600 hover:bg-gray-800'
-                  }`}
-                  title={tab.description}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </nav>
-          </div>
-        )}
-      </div>
+      )}
 
       {/* Tab Content with Smart Loading */}
       <div className="min-h-[600px]">
@@ -248,6 +248,7 @@ const Dashboard = () => {
         {activeTab === 'safe-notes' && <SafeNotes />}
         {activeTab === 'newsletters' && <ENSNewsletters />}
       </div>
+      </section>
     </div>
   );
 };
