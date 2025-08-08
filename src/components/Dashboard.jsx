@@ -9,7 +9,6 @@ import ContractsTable from './ContractsTable';
 import ExpendituresTable from './ExpendituresTable';
 import WorkingGroupsSpending from './WorkingGroupsSpending';
 import ServiceProviderDashboard from './ServiceProviderDashboard';
-import KarpatkeyReports from './KarpatkeyReports';
 import ProjectTracker from './ProjectTracker';
 import TaskManager from './TaskManager';
 import MilestoneTracker from './MilestoneTracker';
@@ -56,9 +55,13 @@ const Dashboard = () => {
       name: 'Governance',
       tabs: [
         { id: 'working-groups', label: 'Working Groups', description: 'Working group spending and budgets' },
-        { id: 'service-providers', label: 'Service Providers', description: 'Service provider reports and metrics' },
-        { id: 'karpatkey', label: 'Karpatkey Reports', description: 'Treasury management reports' },
         { id: 'endaoment', label: 'Endaoment', description: 'Endaoment overview and metrics' }
+      ]
+    },
+    serviceProviders: {
+      name: 'Service Providers',
+      tabs: [
+        { id: 'service-providers', label: 'SPP Dashboard', description: 'Service provider reports and metrics' }
       ]
     },
     analytics: {
@@ -234,7 +237,6 @@ const Dashboard = () => {
         {activeTab === 'wallets' && <WalletsTable />}
         {activeTab === 'working-groups' && <WorkingGroupsSpending />}
         {activeTab === 'service-providers' && <ServiceProviderDashboard />}
-        {activeTab === 'karpatkey' && <KarpatkeyReports />}
         {activeTab === 'endaoment' && <EndaomentOverview />}
         {activeTab === 'analytics-overview' && <AnalyticsOverview />}
         {activeTab === 'real-time' && <RealTimeData />}
