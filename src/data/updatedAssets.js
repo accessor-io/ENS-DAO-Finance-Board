@@ -1,0 +1,327 @@
+// Updated asset data with full transaction hashes and addresses
+export const updatedAssets = [
+  {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    balance: '1250.45',
+    value: 4407836.25,
+    price: 3525.42,
+    change24h: -5.67,
+    contractAddress: null,
+    decimals: 18,
+    chain: 'Ethereum',
+    protocols: ['Native Ethereum'],
+    coingeckoId: 'ethereum',
+    latestActivity: {
+      type: 'Transfer',
+      amount: '50.0 ETH',
+      timestamp: '2024-01-15T10:30:00Z',
+      txHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x1234567890abcdef1234567890abcdef12345678',
+      description: 'Treasury rebalancing transfer'
+    }
+  },
+  {
+    symbol: 'USDC',
+    name: 'USD Coin',
+    balance: '8500000',
+    value: 8500000,
+    price: 1.00,
+    change24h: 0.1,
+    contractAddress: '0xa0b86a33e6441b8c4c8c0b8c4c8c0b8c4c8c0b8c',
+    decimals: 6,
+          chain: 'Ethereum',
+      protocols: ['Circle', 'Compound', 'Aave'],
+      coingeckoId: 'usd-coin',
+    latestActivity: {
+      type: 'Deposit',
+      amount: '500,000 USDC',
+      timestamp: '2024-01-14T15:45:00Z',
+      txHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b',
+      description: 'Yield farming deposit to Compound'
+    }
+  },
+  {
+    symbol: 'USDT',
+    name: 'Tether',
+    balance: '3200000',
+    value: 3200000,
+    price: 1.00,
+    change24h: 0.05,
+    contractAddress: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    decimals: 6,
+          chain: 'Ethereum',
+      protocols: ['Tether', 'Uniswap V3', 'Curve'],
+      coingeckoId: 'tether',
+    latestActivity: {
+      type: 'Swap',
+      amount: '100,000 USDT',
+      timestamp: '2024-01-13T09:20:00Z',
+      txHash: '0x9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0xe592427a0aece92de3edee1f18e0157c05861564',
+      description: 'Liquidity provision to Uniswap V3'
+    }
+  },
+  {
+    symbol: 'DAI',
+    name: 'Dai',
+    balance: '1800000',
+    value: 1800000,
+    price: 1.00,
+    change24h: 0.02,
+    contractAddress: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    decimals: 18,
+          chain: 'Ethereum',
+      protocols: ['MakerDAO', 'Compound', 'Aave'],
+      coingeckoId: 'dai',
+    latestActivity: {
+      type: 'Borrow',
+      amount: '200,000 DAI',
+      timestamp: '2024-01-12T14:15:00Z',
+      txHash: '0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b',
+      description: 'Collateralized borrowing from MakerDAO'
+    }
+  },
+  {
+    symbol: 'WETH',
+    name: 'Wrapped Ethereum',
+    balance: '850.32',
+    value: 2996752.78,
+    price: 3525.42,
+    change24h: -5.67,
+    contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    decimals: 18,
+          chain: 'Ethereum',
+      protocols: ['Uniswap V3', 'SushiSwap', 'Balancer'],
+      coingeckoId: 'weth',
+    latestActivity: {
+      type: 'Liquidity',
+      amount: '100 WETH',
+      timestamp: '2024-01-11T16:30:00Z',
+      txHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0xe592427a0aece92de3edee1f18e0157c05861564',
+      description: 'Added liquidity to Uniswap V3 pool'
+    }
+  },
+  {
+    symbol: 'ENS',
+    name: 'Ethereum Name Service',
+    balance: '125000',
+    value: 1875000,
+    price: 15.00,
+    change24h: -1.2,
+    contractAddress: '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72',
+    decimals: 18,
+          chain: 'Ethereum',
+      protocols: ['ENS DAO', 'Uniswap V3'],
+      coingeckoId: 'ethereum-name-service',
+    latestActivity: {
+      type: 'Governance',
+      amount: '10,000 ENS',
+      timestamp: '2024-01-10T11:45:00Z',
+      txHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x323a763e44fdc230f3b4e1a4c8d1d8c8d1d8c8d1',
+      description: 'Voted on governance proposal #42'
+    }
+  },
+  {
+    symbol: 'UNI',
+    name: 'Uniswap',
+    balance: '45000',
+    value: 270000,
+    price: 6.00,
+    change24h: 3.1,
+    contractAddress: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+    decimals: 18,
+          chain: 'Ethereum',
+      protocols: ['Uniswap DAO', 'Compound'],
+      coingeckoId: 'uniswap',
+    latestActivity: {
+      type: 'Staking',
+      amount: '5,000 UNI',
+      timestamp: '2024-01-09T13:20:00Z',
+      txHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b',
+      description: 'Staked UNI for governance rewards'
+    }
+  },
+  {
+    symbol: 'LDO',
+    name: 'Lido DAO',
+    balance: '75000',
+    value: 187500,
+    price: 2.50,
+    change24h: 1.8,
+    contractAddress: '0x5a98fcbea516cf06857215779fd812ca3bef1b32',
+    decimals: 18,
+          chain: 'Ethereum',
+      protocols: ['Lido', 'Curve'],
+      coingeckoId: 'lido-dao',
+    latestActivity: {
+      type: 'Staking',
+      amount: '10,000 LDO',
+      timestamp: '2024-01-08T10:15:00Z',
+      txHash: '0x9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x5a98fcbea516cf06857215779fd812ca3bef1b32',
+      description: 'Staked LDO for stETH rewards'
+    }
+  },
+  {
+    symbol: 'WBTC',
+    name: 'Wrapped Bitcoin',
+    balance: '25.5',
+    value: 1530000,
+    price: 60000,
+    change24h: 2.1,
+    contractAddress: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    decimals: 8,
+          chain: 'Ethereum',
+      protocols: ['BitGo', 'Compound', 'Aave'],
+      coingeckoId: 'wrapped-bitcoin',
+    latestActivity: {
+      type: 'Deposit',
+      amount: '2.5 WBTC',
+      timestamp: '2024-01-07T08:30:00Z',
+      txHash: '0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b',
+      description: 'Deposited WBTC to Compound for yield'
+    }
+  },
+  {
+    symbol: 'LINK',
+    name: 'Chainlink',
+    balance: '50000',
+    value: 750000,
+    price: 15.00,
+    change24h: -0.8,
+    contractAddress: '0x514910771af9ca656af840dff83e8264ecf986ca',
+    decimals: 18,
+    chain: 'Ethereum',
+    protocols: ['Chainlink', 'Uniswap V3'],
+    latestActivity: {
+      type: 'Transfer',
+      amount: '5,000 LINK',
+      timestamp: '2024-01-06T12:45:00Z',
+      txHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x514910771af9ca656af840dff83e8264ecf986ca',
+      description: 'Oracle payment transfer'
+    }
+  },
+  {
+    symbol: 'MATIC',
+    name: 'Polygon',
+    balance: '100000',
+    value: 65000,
+    price: 0.65,
+    change24h: 1.2,
+    contractAddress: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
+    decimals: 18,
+    chain: 'Ethereum',
+    protocols: ['Polygon', 'QuickSwap'],
+    latestActivity: {
+      type: 'Bridge',
+      amount: '50,000 MATIC',
+      timestamp: '2024-01-05T15:10:00Z',
+      txHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
+      description: 'Bridged to Polygon for staking'
+    }
+  },
+  {
+    symbol: 'AAVE',
+    name: 'Aave',
+    balance: '15000',
+    value: 120000,
+    price: 8.00,
+    change24h: 2.5,
+    contractAddress: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+    decimals: 18,
+    chain: 'Ethereum',
+    protocols: ['Aave', 'Uniswap V3'],
+    latestActivity: {
+      type: 'Governance',
+      amount: '1,000 AAVE',
+      timestamp: '2024-01-04T09:25:00Z',
+      txHash: '0x9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+      description: 'Voted on Aave governance proposal'
+    }
+  },
+  {
+    symbol: 'CRV',
+    name: 'Curve DAO',
+    balance: '80000',
+    value: 40000,
+    price: 0.50,
+    change24h: -1.5,
+    contractAddress: '0xd533a949740bb3306d119cc777fa900ba034cd52',
+    decimals: 18,
+    chain: 'Ethereum',
+    protocols: ['Curve', 'Convex'],
+    latestActivity: {
+      type: 'Staking',
+      amount: '10,000 CRV',
+      timestamp: '2024-01-03T11:40:00Z',
+      txHash: '0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0xd533a949740bb3306d119cc777fa900ba034cd52',
+      description: 'Staked CRV for veCRV rewards'
+    }
+  },
+  {
+    symbol: 'SNX',
+    name: 'Synthetix',
+    balance: '30000',
+    value: 90000,
+    price: 3.00,
+    change24h: 0.8,
+    contractAddress: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0f2a6f6',
+    decimals: 18,
+    chain: 'Ethereum',
+    protocols: ['Synthetix', 'Uniswap V3'],
+    latestActivity: {
+      type: 'Minting',
+      amount: '5,000 SNX',
+      timestamp: '2024-01-02T14:20:00Z',
+      txHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0f2a6f6',
+      description: 'Minted sUSD synthetic asset'
+    }
+  },
+  {
+    symbol: 'COMP',
+    name: 'Compound',
+    balance: '20000',
+    value: 120000,
+    price: 6.00,
+    change24h: 1.1,
+    contractAddress: '0xc00e94cb662c3520282e6f5717214004a7f26888',
+    decimals: 18,
+    chain: 'Ethereum',
+    protocols: ['Compound', 'Uniswap V3'],
+    latestActivity: {
+      type: 'Governance',
+      amount: '2,000 COMP',
+      timestamp: '2024-01-01T16:50:00Z',
+      txHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+      fromAddress: '0x4f2083f5fbede34c2714affb3105539775f7fe64',
+      toAddress: '0xc00e94cb662c3520282e6f5717214004a7f26888',
+      description: 'Voted on Compound governance proposal'
+    }
+  }
+]; 
