@@ -16,7 +16,8 @@ const ServiceProviderDashboard = () => {
     { id: 'providers', label: 'Service Providers' },
     { id: 'updates', label: 'Program Updates' },
     { id: 'voting', label: 'Voting Reports' },
-    { id: 'analytics', label: 'Analytics' }
+    { id: 'analytics', label: 'Analytics' },
+    { id: 'sources', label: 'Sources' }
   ];
 
   const filteredProviders = selectedCategory === 'all' 
@@ -357,6 +358,22 @@ const ServiceProviderDashboard = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Sources Tab */}
+      {activeTab === 'sources' && (
+        <div className="glass p-6 rounded-lg border border-gray-700">
+          <h3 className="text-lg font-semibold text-white mb-4">Official Forum Sources</h3>
+          <ul className="list-disc pl-6 space-y-2 text-sm">
+            {serviceProviderData.sources?.map((s, idx) => (
+              <li key={idx} className="text-blue-400">
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  {s.title}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>

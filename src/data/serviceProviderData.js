@@ -287,7 +287,27 @@ export const serviceProviderData = {
     forumThreads: 25,
     totalViews: 4500,
     totalReplies: 120
-  }
+  },
+
+  // Authoritative sources on discuss.ens.domains
+  sources: [
+    {
+      title: "Service Provider Program (category)",
+      url: "https://discuss.ens.domains/c/service-provider/75"
+    },
+    {
+      title: "Service Provider Applications (subcategory)",
+      url: "https://discuss.ens.domains/c/service-provider-program/service-provider-applications/76"
+    },
+    {
+      title: "Service Provider Strategy Forum",
+      url: "https://discuss.ens.domains/t/service-provider-strategy-forum/20349"
+    },
+    {
+      title: "Service Provider Program Scope and Deliverables",
+      url: "https://discuss.ens.domains/t/service-provider-program-scope-and-deliverables/20316"
+    }
+  ]
 };
 
 export const getCategoryColor = (category) => {
