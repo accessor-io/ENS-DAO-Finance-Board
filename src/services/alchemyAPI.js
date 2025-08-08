@@ -1,5 +1,5 @@
 // Alchemy API Service for ENS DAO Blockchain Data
-const ALCHEMY_API_KEY = 'ciDQECovJQpXvHppjWJrf';
+const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY || 'demo';
 const ALCHEMY_BASE_URL = 'https://eth-mainnet.g.alchemy.com/v2';
 const ENS_DAO_ADDRESS = '0x8f730f4aC5fd234df9993E0E317f07e44fb869C1';
 
@@ -228,6 +228,82 @@ class AlchemyAPIService {
       symbol: token.symbol || 'UNKNOWN',
       decimals: token.decimals || 18
     };
+  }
+
+  // Fetch recent transfers (incoming and outgoing) for multiple addresses
+  async getRecentTransactionsForAddresses(addresses = [], limitPerAddress = 25) {
+    const withMetadata = true;
+    const categories = ['external', 'internal', 'erc20', 'erc721', 'erc1155'];
+
+    const fetchTransfers = async (params) => {
+      try {
+        const response = await fetch(`${this.baseURL}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'alchemy_getAssetTransfers',
+            params: [params],
+          }),
+        });
+        const data = await response.json();
+        if (data.error) throw new Error(data.error.message);
+        return data.result?.transfers || [];
+      } catch (error) {
+        console.error('Alchemy transfer fetch error:', error);
+        return [];
+      }
+    };
+
+    const tasks = [];
+    for (const address of addresses) {
+      // Outgoing transfers
+      tasks.push(
+        fetchTransfers({
+          fromBlock: '0x0',
+          toBlock: 'latest',
+          fromAddress: address,
+          category: categories,
+          withMetadata,
+          maxCount: `0x${limitPerAddress.toString(16)}`,
+        }).then((arr) => arr.map((t) => ({ ...t, _direction: 'outgoing', _address: address })))
+      );
+      // Incoming transfers
+      tasks.push(
+        fetchTransfers({
+          fromBlock: '0x0',
+          toBlock: 'latest',
+          toAddress: address,
+          category: categories,
+          withMetadata,
+          maxCount: `0x${limitPerAddress.toString(16)}`,
+        }).then((arr) => arr.map((t) => ({ ...t, _direction: 'incoming', _address: address })))
+      );
+    }
+
+    const results = await Promise.all(tasks);
+    const transfers = results.flat();
+
+    const normalize = (tx) => ({
+      hash: tx.hash,
+      from: tx.from,
+      to: tx.to,
+      asset: tx.asset || (tx.erc1155Metadata ? 'ERC1155' : 'ETH'),
+      value: typeof tx.value === 'string' ? parseFloat(tx.value) : 0,
+      category: tx.category,
+      blockNumber: tx.blockNum ? parseInt(tx.blockNum, 16) : 0,
+      timestamp: tx.metadata?.blockTimestamp || null,
+      direction: tx._direction,
+      address: tx._address,
+    });
+
+    const normalized = transfers.map(normalize);
+    normalized.sort((a, b) => {
+      if (a.timestamp && b.timestamp) return new Date(b.timestamp) - new Date(a.timestamp);
+      return (b.blockNumber || 0) - (a.blockNumber || 0);
+    });
+    return normalized;
   }
 }
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { dataService, cacheService, handleAPIError } from '../services/api';
+import alchemyAPI from '../services/alchemyAPI';
 
 export const useENSData = () => {
   const [data, setData] = useState({
@@ -25,6 +26,16 @@ export const useENSData = () => {
 
   const [lastUpdated, setLastUpdated] = useState(null);
 
+  // New: recent transfers across wallet addresses
+  const [recentTransfers, setRecentTransfers] = useState({ list: [], loading: false, error: null });
+
+  // Centralized ENS DAO wallets
+  const ensDaoWallets = [
+    '0xFe89cc7aBB2C4183683ab71625C4fCB7B02D44b7',
+    '0x4F2083f5fBede34C2714aFfb3105539775f7FE64',
+    '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5',
+  ];
+
   // Fetch treasury data
   const fetchTreasuryData = useCallback(async () => {
     const cacheKey = 'ens-treasury-data';
@@ -48,6 +59,18 @@ export const useENSData = () => {
       setError(prev => ({ ...prev, treasury: errorMessage.message }));
     } finally {
       setLoading(prev => ({ ...prev, treasury: false }));
+    }
+  }, []);
+
+  // Fetch recent transfers for all wallets
+  const fetchRecentTransfers = useCallback(async (limitPerAddress = 25) => {
+    setRecentTransfers((prev) => ({ ...prev, loading: true, error: null }));
+    try {
+      const transfers = await alchemyAPI.getRecentTransactionsForAddresses(ensDaoWallets, limitPerAddress);
+      setRecentTransfers({ list: transfers, loading: false, error: null });
+      setLastUpdated(new Date().toISOString());
+    } catch (err) {
+      setRecentTransfers({ list: [], loading: false, error: err?.message || 'Failed to fetch transfers' });
     }
   }, []);
 
@@ -137,9 +160,10 @@ export const useENSData = () => {
       fetchTreasuryData(),
       fetchTransactionData(),
       fetchTokenHoldingsData(),
-      fetchGasPriceData()
+      fetchGasPriceData(),
+      fetchRecentTransfers(),
     ]);
-  }, [fetchTreasuryData, fetchTransactionData, fetchTokenHoldingsData, fetchGasPriceData]);
+  }, [fetchTreasuryData, fetchTransactionData, fetchTokenHoldingsData, fetchGasPriceData, fetchRecentTransfers]);
 
   // Auto-refresh data every 5 minutes
   useEffect(() => {
@@ -191,7 +215,9 @@ export const useENSData = () => {
     fetchTreasuryData,
     fetchTransactionData,
     fetchTokenHoldingsData,
-    fetchGasPriceData
+    fetchGasPriceData,
+    recentTransfers,
+    fetchRecentTransfers,
   };
 };
 
