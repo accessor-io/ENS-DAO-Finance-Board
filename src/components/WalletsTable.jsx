@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import alchemyAPI from '../services/alchemyAPI';
 import { ensFinancialData } from '../data/ensData';
 
 const WalletsTable = () => {
@@ -26,11 +27,35 @@ const WalletsTable = () => {
     return colors[type] || colors['other'];
   };
 
+  const [liveBalances, setLiveBalances] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const walletAddresses = useMemo(() => ensFinancialData.wallets.map(w => w.address), []);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      setLoading(true);
+      try {
+        const balances = await alchemyAPI.getETHBalances(walletAddresses);
+        if (mounted) setLiveBalances(balances);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => { mounted = false; };
+  }, [walletAddresses]);
+
+  const getLiveEth = (address) => {
+    const entry = liveBalances.find(b => b.address.toLowerCase() === address.toLowerCase());
+    return entry ? entry.balanceEth : null;
+  };
+
   return (
     <div className="glass rounded-lg shadow-sm border border-gray-700 overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-700">
         <h3 className="text-lg font-semibold text-white">ENS DAO Wallets</h3>
-        <p className="text-sm text-gray-300 mt-1">Overview of all associated wallets and their balances</p>
+        <p className="text-sm text-gray-300 mt-1">Overview of all associated wallets and their balances {loading && '(refreshing...)'}</p>
       </div>
       
       <div className="overflow-x-auto">
@@ -76,7 +101,7 @@ const WalletsTable = () => {
                   </span>
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                  {wallet.balance.eth.toLocaleString()} ETH
+                  {(getLiveEth(wallet.address) ?? wallet.balance.eth).toLocaleString()} ETH
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-semibold">
                   {formatCurrency(wallet.balance.usd)}

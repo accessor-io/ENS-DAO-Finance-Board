@@ -305,6 +305,38 @@ class AlchemyAPIService {
     });
     return normalized;
   }
+
+  // Generic ETH balance for one address (in ETH)
+  async getETHBalance(address) {
+    try {
+      const response = await fetch(`${this.baseURL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'eth_getBalance',
+          params: [address, 'latest'],
+        }),
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error.message);
+      const balanceWei = parseInt(data.result, 16) || 0;
+      return balanceWei / Math.pow(10, 18);
+    } catch (error) {
+      console.error('Error fetching ETH balance for', address, error);
+      return 0;
+    }
+  }
+
+  // Batch balances
+  async getETHBalances(addresses = []) {
+    const tasks = addresses.map(async (addr) => ({
+      address: addr,
+      balanceEth: await this.getETHBalance(addr),
+    }));
+    return Promise.all(tasks);
+  }
 }
 
 export default new AlchemyAPIService(); 

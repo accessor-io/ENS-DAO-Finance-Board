@@ -38,14 +38,22 @@ const TransactionsTable = () => {
   };
 
   const categories = ['all', 'erc20', 'erc721', 'erc1155', 'external', 'internal'];
+  const [walletFilter, setWalletFilter] = useState('all');
 
   const { recentTransfers } = useENSData();
 
   const txs = recentTransfers?.list || [];
+  const wallets = useMemo(() => {
+    const set = new Set(txs.map((t) => t.address).filter(Boolean));
+    return ['all', ...Array.from(set)];
+  }, [txs]);
+
   const filteredTransactions = useMemo(() => {
-    if (filter === 'all') return txs;
-    return txs.filter((tx) => tx.category === filter);
-  }, [txs, filter]);
+    let out = txs;
+    if (filter !== 'all') out = out.filter((tx) => tx.category === filter);
+    if (walletFilter !== 'all') out = out.filter((tx) => tx.address === walletFilter);
+    return out;
+  }, [txs, filter, walletFilter]);
 
   return (
     <div className="glass border border-gray-700 overflow-hidden">
@@ -55,7 +63,7 @@ const TransactionsTable = () => {
             <h3 className="text-base font-medium text-white uppercase tracking-wide">Transaction History</h3>
             <p className="text-sm text-gray-300 mt-2">Recent on-chain transfers across ENS DAO wallets</p>
           </div>
-          <div>
+          <div className="flex items-end gap-4">
             <label htmlFor="category-filter" className="block text-xs font-medium text-gray-300 mb-2 uppercase tracking-wide">
               Filter by Category
             </label>
@@ -71,6 +79,23 @@ const TransactionsTable = () => {
                 </option>
               ))}
             </select>
+            <div>
+              <label htmlFor="wallet-filter" className="block text-xs font-medium text-gray-300 mb-2 uppercase tracking-wide">
+                Wallet
+              </label>
+              <select
+                id="wallet-filter"
+                value={walletFilter}
+                onChange={(e) => setWalletFilter(e.target.value)}
+                className="border border-gray-600 rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
+              >
+                {wallets.map((w) => (
+                  <option key={w} value={w}>
+                    {w === 'all' ? 'All Wallets' : formatAddress(w)}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -87,6 +112,9 @@ const TransactionsTable = () => {
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Amount
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Wallet
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Category
@@ -119,6 +147,9 @@ const TransactionsTable = () => {
                     {transaction.value ? `${transaction.value.toFixed(6)} ${transaction.asset}` : '-'}
                   </div>
                   <div className="text-xs text-gray-400 capitalize">{transaction.direction}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
+                  {transaction.address ? formatAddress(transaction.address) : '—'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getCategoryColor(transaction.category)}`}>
