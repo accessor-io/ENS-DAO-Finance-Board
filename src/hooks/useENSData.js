@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { dataService, cacheService, handleAPIError } from '../services/api';
+import { walletDirectory } from '../data/walletDirectory';
 import alchemyAPI from '../services/alchemyAPI';
 
 export const useENSData = () => {
@@ -30,7 +31,7 @@ export const useENSData = () => {
   const [recentTransfers, setRecentTransfers] = useState({ list: [], loading: false, error: null });
 
   // Centralized ENS DAO wallets
-  const ensDaoWallets = [
+  const ensDaoWallets = (walletDirectory?.length ? walletDirectory : []).map(w => w.address) ?? [
     '0xFe89cc7aBB2C4183683ab71625C4fCB7B02D44b7',
     '0x4F2083f5fBede34C2714aFfb3105539775f7FE64',
     '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5',

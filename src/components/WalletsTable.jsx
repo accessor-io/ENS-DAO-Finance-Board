@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import alchemyAPI from '../services/alchemyAPI';
 import { ensFinancialData } from '../data/ensData';
+import { walletDirectory } from '../data/walletDirectory';
 
 const WalletsTable = () => {
   const formatCurrency = (amount) => {
@@ -30,7 +31,8 @@ const WalletsTable = () => {
   const [liveBalances, setLiveBalances] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const walletAddresses = useMemo(() => ensFinancialData.wallets.map(w => w.address), []);
+  const sourceWallets = useMemo(() => walletDirectory.length ? walletDirectory : ensFinancialData.wallets, []);
+  const walletAddresses = useMemo(() => sourceWallets.map(w => w.address), [sourceWallets]);
 
   useEffect(() => {
     let mounted = true;
@@ -83,37 +85,37 @@ const WalletsTable = () => {
             </tr>
           </thead>
           <tbody className="bg-gray-900">
-            {ensFinancialData.wallets.map((wallet, index) => (
+            {sourceWallets.map((wallet, index) => (
               <tr key={index} className="border-b border-gray-700 hover:bg-gray-800 transition-colors duration-150">
                 <td className="px-8 py-5 whitespace-nowrap">
                   <div>
                     <div className="text-sm font-semibold text-white font-mono">
                       {formatAddress(wallet.address)}
                     </div>
-                    {wallet.ensName && (
-                      <div className="text-sm text-blue-400 mt-1">{wallet.ensName}</div>
+                    {(wallet.ensName || wallet.label) && (
+                      <div className="text-sm text-blue-400 mt-1">{wallet.ensName || wallet.label}</div>
                     )}
                   </div>
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap">
-                  <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${getTypeColor(wallet.type)}`}>
-                    {wallet.type.replace('-', ' ')}
+                  <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${getTypeColor(wallet.type || wallet.category || 'other')}`}>
+                    {(wallet.type || wallet.category || 'other').replace('-', ' ')}
                   </span>
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                  {(getLiveEth(wallet.address) ?? wallet.balance.eth).toLocaleString()} ETH
+                  {(getLiveEth(wallet.address) ?? wallet.balance?.eth ?? 0).toLocaleString()} ETH
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-semibold">
-                  {formatCurrency(wallet.balance.usd)}
+                  {formatCurrency(wallet.balance?.usd ?? 0)}
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                  {wallet.balance.ens.toLocaleString()} ENS
+                  {(wallet.balance?.ens ?? 0).toLocaleString()} ENS
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap">
                   <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${
-                    wallet.manager === 'karpatkey' ? 'marble-orange text-orange-300 border border-orange-700' : 'marble-blue text-blue-300 border border-blue-700'
+                    (wallet.manager || '').toLowerCase() === 'karpatkey' ? 'marble-orange text-orange-300 border border-orange-700' : 'marble-blue text-blue-300 border border-blue-700'
                   }`}>
-                    {wallet.manager}
+                    {wallet.manager || 'ens-dao'}
                   </span>
                 </td>
               </tr>
@@ -124,11 +126,9 @@ const WalletsTable = () => {
       
       <div className="px-8 py-4 bg-gray-800 border-t border-gray-700">
         <div className="flex justify-between text-sm">
-          <span className="text-gray-400">Total Wallets: {ensFinancialData.wallets.length}</span>
+          <span className="text-gray-400">Total Wallets: {sourceWallets.length}</span>
           <span className="text-white font-semibold">
-            Combined USD Value: {formatCurrency(
-              ensFinancialData.wallets.reduce((total, wallet) => total + wallet.balance.usd, 0)
-            )}
+            Combined USD Value: {formatCurrency(sourceWallets.reduce((total, wallet) => total + (wallet.balance?.usd ?? 0), 0))}
           </span>
         </div>
       </div>
