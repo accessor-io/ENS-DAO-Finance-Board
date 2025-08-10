@@ -93,11 +93,12 @@ src/
    pnpm install
    ```
 
-3. **Set up environment variables** (optional)
-   Create a `.env` file in the project root:
+3. **Set up environment variables**
+   Create a `.env` file in `workspace/dashboard`:
    ```env
    VITE_ETHERSCAN_API_KEY=your_etherscan_api_key
    VITE_DUNE_API_KEY=your_dune_api_key
+   VITE_ALCHEMY_API_KEY=your_alchemy_api_key
    ```
 
 4. **Start the development server**
@@ -125,6 +126,11 @@ src/
 - Domain resolution
 - Reverse record lookup
 - ENS name validation
+
+### Alchemy (Ethereum Mainnet)
+- Used for multi-wallet transfers, balances, and enriched on-chain metadata
+- Methods utilized: `eth_getBalance`, `alchemy_getAssetTransfers`, `alchemy_getTokenBalances`
+- Ensure `VITE_ALCHEMY_API_KEY` is set
 
 ## Data Sources
 

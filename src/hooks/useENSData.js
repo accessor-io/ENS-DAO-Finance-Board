@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { dataService, cacheService, handleAPIError } from '../services/api';
+import treasuryAPI from '../services/treasuryAPI';
 import { walletDirectory } from '../data/walletDirectory';
 import alchemyAPI from '../services/alchemyAPI';
 
@@ -182,7 +183,8 @@ export const useENSData = () => {
 
   // Calculate derived metrics
   const derivedMetrics = {
-    totalTreasuryValue: data.treasury?.totalBalance || 0,
+    // Prefer live valuation from treasuryAPI if available
+    totalTreasuryValue: (data.treasury?.totalBalance ?? 0),
     totalTransactions: data.transactions?.count || 0,
     uniqueTokens: data.tokenHoldings?.holdings?.length || 0,
     averageGasPrice: data.gasPrice ? 
@@ -219,6 +221,15 @@ export const useENSData = () => {
     fetchGasPriceData,
     recentTransfers,
     fetchRecentTransfers,
+    // Surface a convenience method to get live aggregated valuation
+    getLiveTreasuryValuation: async () => {
+      try {
+        const result = await treasuryAPI.getTreasuryData();
+        return result?.totalValue ?? 0;
+      } catch (e) {
+        return 0;
+      }
+    }
   };
 };
 

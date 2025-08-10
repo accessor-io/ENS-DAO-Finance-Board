@@ -86,8 +86,33 @@ class TreasuryAPI {
 
   // Get token prices
   async getTokenPrices(symbols) {
-    const symbolsString = symbols.join(',');
-    const url = `${PRICE_APIS.coingecko}/simple/price?ids=${symbolsString}&vs_currencies=usd&include_24hr_change=true`;
+    // Map common symbols to Coingecko IDs
+    const symbolToCoingeckoId = {
+      eth: 'ethereum',
+      weth: 'weth',
+      usdc: 'usd-coin',
+      usdt: 'tether',
+      dai: 'dai',
+      ens: 'ethereum-name-service',
+      uni: 'uniswap',
+      ldo: 'lido-dao',
+      wbtc: 'wrapped-bitcoin',
+      link: 'chainlink',
+      matic: 'matic-network'
+    };
+
+    const ids = Array.from(new Set(
+      (symbols || [])
+        .map((s) => (s || '').toString().toLowerCase())
+        .map((s) => symbolToCoingeckoId[s])
+        .filter(Boolean)
+    ));
+
+    if (!ids.length) {
+      return {};
+    }
+
+    const url = `${PRICE_APIS.coingecko}/simple/price?ids=${ids.join(',')}&vs_currencies=usd&include_24hr_change=true`;
     
     try {
       const response = await fetch(url);
@@ -136,13 +161,27 @@ class TreasuryAPI {
       // Add token balances
       assets.push(...tokenBalances);
       
-      // Get prices for all assets
-      const symbols = assets.map(asset => asset.symbol.toLowerCase());
+      // Get prices for all assets (symbol mapping handled in getTokenPrices)
+      const symbols = assets.map(asset => (asset.symbol || '').toLowerCase());
       const prices = await this.getTokenPrices(symbols);
       
       // Calculate values and add price data
       const assetsWithPrices = assets.map(asset => {
-        const priceData = prices[asset.symbol.toLowerCase()];
+         // Map price lookup by symbol using the same mapping as above
+         const symbolToCoingeckoId = {
+           eth: 'ethereum',
+           weth: 'weth',
+           usdc: 'usd-coin',
+           usdt: 'tether',
+           dai: 'dai',
+           ens: 'ethereum-name-service',
+           uni: 'uniswap',
+           ldo: 'lido-dao',
+           wbtc: 'wrapped-bitcoin',
+           link: 'chainlink',
+           matic: 'matic-network'
+         };
+         const priceData = prices[symbolToCoingeckoId[(asset.symbol || '').toLowerCase()]];
         const price = priceData?.usd || 0;
         const change24h = priceData?.usd_24h_change || 0;
         const value = parseFloat(asset.balance) * price;

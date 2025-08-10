@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useENSData from '../hooks/useENSData';
 
 const RealTimeData = () => {
@@ -10,8 +10,20 @@ const RealTimeData = () => {
     derivedMetrics,
     formatCurrency,
     formatGasPrice,
-    refreshAllData
+    refreshAllData,
+    getLiveTreasuryValuation
   } = useENSData();
+
+  const [liveValuation, setLiveValuation] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const v = await getLiveTreasuryValuation();
+      if (mounted) setLiveValuation(v);
+    })();
+    return () => { mounted = false; };
+  }, [getLiveTreasuryValuation]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('en-US', {
@@ -89,8 +101,11 @@ const RealTimeData = () => {
             <div className="p-4 bg-blue-50 rounded-lg">
               <p className="text-sm font-medium text-blue-800">Total Treasury Value</p>
               <p className="text-2xl font-bold text-blue-900">
-                {formatCurrency(derivedMetrics.totalTreasuryValue)}
+                {formatCurrency((liveValuation ?? derivedMetrics.totalTreasuryValue))}
               </p>
+              {liveValuation !== null && (
+                <p className="text-xs text-blue-700 mt-1">Live valuation via on-chain + price feed</p>
+              )}
             </div>
             <div className="p-4 bg-green-50 rounded-lg">
               <p className="text-sm font-medium text-green-800">Active Wallets</p>
