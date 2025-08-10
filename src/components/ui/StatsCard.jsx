@@ -11,7 +11,7 @@ const StatsCard = ({
   ...props 
 }) => {
   const getTrendColor = () => {
-    switch (trendType) {propossals
+    switch (trendType) {
       case 'positive':
         return 'text-green-400';
       case 'negative':
