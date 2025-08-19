@@ -35,6 +35,8 @@ const WalletsTable = () => {
   const [walletData, setWalletData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [expandedWallet, setExpandedWallet] = useState(null);
+  const [transactionData, setTransactionData] = useState({});
 
   const sourceWallets = useMemo(() => walletDirectory.length ? walletDirectory : ensFinancialData.wallets, []);
 
@@ -43,10 +45,13 @@ const WalletsTable = () => {
     (async () => {
       setLoading(true);
       try {
+        console.log('WalletsTable: Starting to fetch wallet data...');
         const data = await alchemyAPI.getAllWalletData();
+        console.log('WalletsTable: Received wallet data:', data);
         if (mounted) {
           setWalletData(data);
           setLastUpdated(new Date());
+          console.log('WalletsTable: Updated state with wallet data');
         }
       } catch (error) {
         console.error('Error fetching wallet data:', error);
@@ -58,7 +63,9 @@ const WalletsTable = () => {
   }, []);
 
   const getWalletData = (address) => {
-    return walletData.find(w => w.address.toLowerCase() === address.toLowerCase()) || {};
+    const data = walletData.find(w => w.address.toLowerCase() === address.toLowerCase()) || {};
+    console.log('getWalletData for', address, ':', data);
+    return data;
   };
 
   const getTokenCount = (address) => {
@@ -69,6 +76,38 @@ const WalletsTable = () => {
   const getTransactionCount = (address) => {
     const data = getWalletData(address);
     return data.recentTransactions ? data.recentTransactions.length : 0;
+  };
+
+  const handleRowClick = async (address) => {
+    if (expandedWallet === address) {
+      setExpandedWallet(null);
+    } else {
+      setExpandedWallet(address);
+      if (!transactionData[address]) {
+        try {
+          const transactions = await alchemyAPI.getRecentTransactions(address, 20);
+          setTransactionData(prev => ({
+            ...prev,
+            [address]: transactions
+          }));
+        } catch (error) {
+          console.error('Error fetching transactions for', address, error);
+        }
+      }
+    }
+  };
+
+  const formatTransaction = (tx) => {
+    const value = tx.value ? parseFloat(tx.value) / Math.pow(10, 18) : 0;
+    const date = tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleDateString() : 'Unknown';
+    return {
+      hash: tx.hash,
+      from: tx.from,
+      to: tx.to,
+      value: value.toFixed(6),
+      date,
+      type: tx.category || 'external'
+    };
   };
 
   return (
@@ -108,39 +147,135 @@ const WalletsTable = () => {
           </thead>
           <tbody className="bg-gray-900">
             {sourceWallets.map((wallet, index) => (
-              <tr key={index} className="border-b border-gray-700 hover:bg-gray-800 transition-colors duration-150">
-                <td className="px-8 py-5 whitespace-nowrap">
-                  <div>
-                    <div className="text-sm font-semibold text-white font-mono">
-                      {formatAddress(wallet.address)}
+              <React.Fragment key={index}>
+                <tr 
+                  className="border-b border-gray-700 hover:bg-gray-800 transition-colors duration-150 cursor-pointer"
+                  onClick={() => handleRowClick(wallet.address)}
+                >
+                  <td className="px-8 py-5 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-1">
+                        <div className="text-sm font-semibold text-white font-mono">
+                          {formatAddress(wallet.address)}
+                        </div>
+                        {(wallet.ensName || wallet.label) && (
+                          <div className="text-sm text-blue-400 mt-1">{wallet.ensName || wallet.label}</div>
+                        )}
+                      </div>
+                      <div className="ml-2">
+                        <svg 
+                          className={`w-4 h-4 text-gray-400 transition-transform ${expandedWallet === wallet.address ? 'rotate-180' : ''}`}
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                     </div>
-                    {(wallet.ensName || wallet.label) && (
-                      <div className="text-sm text-blue-400 mt-1">{wallet.ensName || wallet.label}</div>
-                    )}
-                  </div>
-                </td>
-                <td className="px-8 py-5 whitespace-nowrap">
-                  <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${getTypeColor(wallet.type || wallet.category || 'other')}`}>
-                    {(wallet.type || wallet.category || 'other').replace('-', ' ')}
-                  </span>
-                </td>
-                <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                  {(getWalletData(wallet.address).ethBalance ?? 0).toFixed(4)} ETH
-                </td>
-                <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-semibold">
-                  {getTokenCount(wallet.address)} tokens
-                </td>
-                <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                  {getTransactionCount(wallet.address)} tx
-                </td>
-                <td className="px-8 py-5 whitespace-nowrap">
-                  <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${
-                    (wallet.manager || '').toLowerCase() === 'karpatkey' ? 'marble-orange text-orange-300 border border-orange-700' : 'marble-blue text-blue-300 border border-blue-700'
-                  }`}>
-                    {wallet.manager || 'ens-dao'}
-                  </span>
-                </td>
-              </tr>
+                  </td>
+                  <td className="px-8 py-5 whitespace-nowrap">
+                    <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${getTypeColor(wallet.type || wallet.category || 'other')}`}>
+                      {(wallet.type || wallet.category || 'other').replace('-', ' ')}
+                    </span>
+                  </td>
+                  <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
+                    {(getWalletData(wallet.address).ethBalance ?? 0).toFixed(4)} ETH
+                  </td>
+                  <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-semibold">
+                    {getTokenCount(wallet.address)} tokens
+                  </td>
+                  <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
+                    {getTransactionCount(wallet.address)} tx
+                  </td>
+                  <td className="px-8 py-5 whitespace-nowrap">
+                    <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${
+                      (wallet.manager || '').toLowerCase() === 'karpatkey' ? 'marble-orange text-orange-300 border border-orange-700' : 'marble-blue text-blue-300 border border-blue-700'
+                    }`}>
+                      {wallet.manager || 'ens-dao'}
+                    </span>
+                  </td>
+                </tr>
+                
+                {/* Expanded Transaction Section */}
+                {expandedWallet === wallet.address && (
+                  <tr className="bg-gray-800 border-b border-gray-700">
+                    <td colSpan="6" className="px-8 py-6">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-lg font-semibold text-white">Recent Transactions</h4>
+                          <span className="text-sm text-gray-400">
+                            {transactionData[wallet.address]?.length || 0} transactions
+                          </span>
+                        </div>
+                        
+                        {transactionData[wallet.address] && transactionData[wallet.address].length > 0 ? (
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full text-sm">
+                              <thead>
+                                <tr className="border-b border-gray-600">
+                                  <th className="text-left py-2 text-gray-300">Hash</th>
+                                  <th className="text-left py-2 text-gray-300">From</th>
+                                  <th className="text-left py-2 text-gray-300">To</th>
+                                  <th className="text-left py-2 text-gray-300">Value (ETH)</th>
+                                  <th className="text-left py-2 text-gray-300">Date</th>
+                                  <th className="text-left py-2 text-gray-300">Type</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {transactionData[wallet.address].slice(0, 10).map((tx, txIndex) => {
+                                  const formattedTx = formatTransaction(tx);
+                                  return (
+                                    <tr key={txIndex} className="border-b border-gray-700 hover:bg-gray-700">
+                                      <td className="py-2 text-blue-400 font-mono text-xs">
+                                        {formattedTx.hash ? `${formattedTx.hash.slice(0, 8)}...${formattedTx.hash.slice(-6)}` : 'N/A'}
+                                      </td>
+                                      <td className="py-2 text-gray-300 font-mono text-xs">
+                                        {formattedTx.from ? formatAddress(formattedTx.from) : 'N/A'}
+                                      </td>
+                                      <td className="py-2 text-gray-300 font-mono text-xs">
+                                        {formattedTx.to ? formatAddress(formattedTx.to) : 'N/A'}
+                                      </td>
+                                      <td className="py-2 text-white font-mono">
+                                        {formattedTx.value}
+                                      </td>
+                                      <td className="py-2 text-gray-300">
+                                        {formattedTx.date}
+                                      </td>
+                                      <td className="py-2">
+                                        <span className={`inline-flex px-2 py-1 text-xs rounded ${
+                                          formattedTx.type === 'erc20' ? 'bg-green-900 text-green-300' :
+                                          formattedTx.type === 'erc721' ? 'bg-purple-900 text-purple-300' :
+                                          'bg-blue-900 text-blue-300'
+                                        }`}>
+                                          {formattedTx.type}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <div className="text-center py-8">
+                            <div className="text-gray-400 text-sm">
+                              {transactionData[wallet.address] === undefined ? (
+                                <div className="flex items-center justify-center">
+                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div>
+                                  Loading transactions...
+                                </div>
+                              ) : (
+                                'No recent transactions found'
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
