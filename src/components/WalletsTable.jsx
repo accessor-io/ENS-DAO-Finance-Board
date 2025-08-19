@@ -453,7 +453,7 @@ const WalletsTable = () => {
         </table>
       </div>
       
-                     <div className="px-12 py-4 bg-gray-800 border-t border-gray-700">
+                     <div className="px-16 py-4 bg-gray-800 border-t border-gray-700">
         <div className="flex justify-between text-sm">
           <span className="text-gray-400">Total Wallets: {sourceWallets.length}</span>
           <span className="text-white font-semibold">
