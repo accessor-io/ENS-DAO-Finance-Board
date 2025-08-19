@@ -381,7 +381,7 @@ class InfuraAPIService {
     try {
       console.log('Getting recent transactions for', address, '(Infura - simplified)');
       
-      // For demonstration, return mock transaction data
+      // For demonstration, return mock transaction data with various coin types
       // In a full implementation, you'd query eth_getLogs for Transfer events
       const mockTransactions = [
         {
@@ -389,6 +389,7 @@ class InfuraAPIService {
           from: address,
           to: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
           value: '0.001',
+          valueUSD: '1.85',
           timestamp: Math.floor(Date.now() / 1000) - 3600,
           category: 'external'
         },
@@ -396,16 +397,191 @@ class InfuraAPIService {
           hash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
           from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
           to: address,
-          value: '0.005',
+          value: '1000',
+          valueUSD: '1000.00',
           timestamp: Math.floor(Date.now() / 1000) - 7200,
-          category: 'erc20'
+          category: 'erc20',
+          tokenSymbol: 'USDC',
+          tokenName: 'USD Coin'
         },
         {
           hash: '0x9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba',
           from: address,
           to: '0x8f730f4aC5fd234df9993E0E317f07e44fb869C1',
           value: '0.002',
+          valueUSD: '3.70',
           timestamp: Math.floor(Date.now() / 1000) - 10800,
+          category: 'external'
+        },
+        {
+          hash: '0x1111111111111111111111111111111111111111111111111111111111111111',
+          from: '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
+          to: address,
+          value: '5000',
+          valueUSD: '8500.00',
+          timestamp: Math.floor(Date.now() / 1000) - 14400,
+          category: 'erc20',
+          tokenSymbol: 'ENS',
+          tokenName: 'Ethereum Name Service'
+        },
+        {
+          hash: '0x2222222222222222222222222222222222222222222222222222222222222222',
+          from: address,
+          to: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          value: '1',
+          valueUSD: '1850.00',
+          timestamp: Math.floor(Date.now() / 1000) - 18000,
+          category: 'external'
+        },
+        {
+          hash: '0x3333333333333333333333333333333333333333333333333333333333333333',
+          from: '0xA0b86a33E6441b8c4C8C8C8C8C8C8C8C8C8C8C8C',
+          to: address,
+          value: '100',
+          valueUSD: '185000.00',
+          timestamp: Math.floor(Date.now() / 1000) - 21600,
+          category: 'erc20',
+          tokenSymbol: 'WETH',
+          tokenName: 'Wrapped Ether'
+        },
+        {
+          hash: '0x4444444444444444444444444444444444444444444444444444444444444444',
+          from: address,
+          to: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          value: '1',
+          valueUSD: '5000.00',
+          timestamp: Math.floor(Date.now() / 1000) - 25200,
+          category: 'erc721',
+          tokenSymbol: 'NFT',
+          tokenName: 'ENS NFT #1234'
+        },
+        {
+          hash: '0x5555555555555555555555555555555555555555555555555555555555555555',
+          from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          to: address,
+          value: '0.005',
+          valueUSD: '9.25',
+          timestamp: Math.floor(Date.now() / 1000) - 28800,
+          category: 'external'
+        },
+        {
+          hash: '0x6666666666666666666666666666666666666666666666666666666666666666',
+          from: address,
+          to: '0x8f730f4aC5fd234df9993E0E317f07e44fb869C1',
+          value: '50',
+          valueUSD: '50.00',
+          timestamp: Math.floor(Date.now() / 1000) - 32400,
+          category: 'erc20',
+          tokenSymbol: 'DAI',
+          tokenName: 'Dai Stablecoin'
+        },
+        {
+          hash: '0x7777777777777777777777777777777777777777777777777777777777777777',
+          from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          to: address,
+          value: '0.003',
+          valueUSD: '5.55',
+          timestamp: Math.floor(Date.now() / 1000) - 36000,
+          category: 'external'
+        },
+        {
+          hash: '0x8888888888888888888888888888888888888888888888888888888888888888',
+          from: address,
+          to: '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
+          value: '100',
+          valueUSD: '170.00',
+          timestamp: Math.floor(Date.now() / 1000) - 39600,
+          category: 'erc20',
+          tokenSymbol: 'ENS',
+          tokenName: 'Ethereum Name Service'
+        },
+        {
+          hash: '0x9999999999999999999999999999999999999999999999999999999999999999',
+          from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          to: address,
+          value: '0.001',
+          valueUSD: '1.85',
+          timestamp: Math.floor(Date.now() / 1000) - 43200,
+          category: 'external'
+        },
+        {
+          hash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          from: address,
+          to: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          value: '200',
+          valueUSD: '200.00',
+          timestamp: Math.floor(Date.now() / 1000) - 46800,
+          category: 'erc20',
+          tokenSymbol: 'USDT',
+          tokenName: 'Tether USD'
+        },
+        {
+          hash: '0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+          from: '0x8f730f4aC5fd234df9993E0E317f07e44fb869C1',
+          to: address,
+          value: '0.004',
+          valueUSD: '7.40',
+          timestamp: Math.floor(Date.now() / 1000) - 50400,
+          category: 'external'
+        },
+        {
+          hash: '0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
+          from: address,
+          to: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          value: '1',
+          valueUSD: '3000.00',
+          timestamp: Math.floor(Date.now() / 1000) - 54000,
+          category: 'erc721',
+          tokenSymbol: 'NFT',
+          tokenName: 'ENS NFT #5678'
+        },
+        {
+          hash: '0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+          from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          to: address,
+          value: '0.002',
+          valueUSD: '3.70',
+          timestamp: Math.floor(Date.now() / 1000) - 57600,
+          category: 'external'
+        },
+        {
+          hash: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          from: address,
+          to: '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
+          value: '500',
+          valueUSD: '850.00',
+          timestamp: Math.floor(Date.now() / 1000) - 61200,
+          category: 'erc20',
+          tokenSymbol: 'ENS',
+          tokenName: 'Ethereum Name Service'
+        },
+        {
+          hash: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+          from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          to: address,
+          value: '0.006',
+          valueUSD: '11.10',
+          timestamp: Math.floor(Date.now() / 1000) - 64800,
+          category: 'external'
+        },
+        {
+          hash: '0x1111111111111111111111111111111111111111111111111111111111111112',
+          from: address,
+          to: '0x8f730f4aC5fd234df9993E0E317f07e44fb869C1',
+          value: '75',
+          valueUSD: '75.00',
+          timestamp: Math.floor(Date.now() / 1000) - 68400,
+          category: 'erc20',
+          tokenSymbol: 'DAI',
+          tokenName: 'Dai Stablecoin'
+        },
+        {
+          hash: '0x2222222222222222222222222222222222222222222222222222222222222223',
+          from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+          to: address,
+          value: '0.008',
+          valueUSD: '14.80',
+          timestamp: Math.floor(Date.now() / 1000) - 72000,
           category: 'external'
         }
       ];

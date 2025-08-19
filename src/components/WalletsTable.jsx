@@ -100,13 +100,30 @@ const WalletsTable = () => {
   const formatTransaction = (tx) => {
     const value = tx.value ? parseFloat(tx.value) / Math.pow(10, 18) : 0;
     const date = tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleDateString() : 'Unknown';
+    const time = tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleTimeString() : 'Unknown';
+    
+    // Determine coin type based on transaction category
+    let coinType = 'ETH';
+    if (tx.category === 'erc20') {
+      coinType = tx.tokenSymbol || 'ERC20';
+    } else if (tx.category === 'erc721') {
+      coinType = 'NFT';
+    } else if (tx.category === 'erc1155') {
+      coinType = 'ERC1155';
+    }
+    
     return {
       hash: tx.hash,
       from: tx.from,
       to: tx.to,
       value: value.toFixed(6),
+      valueUSD: tx.valueUSD || null,
       date,
-      type: tx.category || 'external'
+      time,
+      type: tx.category || 'external',
+      coinType,
+      tokenName: tx.tokenName || null,
+      tokenSymbol: tx.tokenSymbol || null
     };
   };
 
@@ -203,7 +220,7 @@ const WalletsTable = () => {
                     <td colSpan="6" className="px-8 py-6">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                          <h4 className="text-lg font-semibold text-white">Recent Transactions</h4>
+                          <h4 className="text-lg font-semibold text-white">Last 20 Transactions</h4>
                           <span className="text-sm text-gray-400">
                             {transactionData[wallet.address]?.length || 0} transactions
                           </span>
@@ -217,41 +234,59 @@ const WalletsTable = () => {
                                   <th className="text-left py-2 text-gray-300">Hash</th>
                                   <th className="text-left py-2 text-gray-300">From</th>
                                   <th className="text-left py-2 text-gray-300">To</th>
-                                  <th className="text-left py-2 text-gray-300">Value (ETH)</th>
-                                  <th className="text-left py-2 text-gray-300">Date</th>
+                                  <th className="text-left py-2 text-gray-300">Value</th>
+                                  <th className="text-left py-2 text-gray-300">Coin</th>
+                                  <th className="text-left py-2 text-gray-300">Date/Time</th>
                                   <th className="text-left py-2 text-gray-300">Type</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                {transactionData[wallet.address].slice(0, 10).map((tx, txIndex) => {
+                                {transactionData[wallet.address].slice(0, 20).map((tx, txIndex) => {
                                   const formattedTx = formatTransaction(tx);
                                   return (
-                                    <tr key={txIndex} className="border-b border-gray-700 hover:bg-gray-700">
-                                      <td className="py-2 text-blue-400 font-mono text-xs">
-                                        {formattedTx.hash ? `${formattedTx.hash.slice(0, 8)}...${formattedTx.hash.slice(-6)}` : 'N/A'}
-                                      </td>
-                                      <td className="py-2 text-gray-300 font-mono text-xs">
-                                        {formattedTx.from ? formatAddress(formattedTx.from) : 'N/A'}
-                                      </td>
-                                      <td className="py-2 text-gray-300 font-mono text-xs">
-                                        {formattedTx.to ? formatAddress(formattedTx.to) : 'N/A'}
-                                      </td>
-                                      <td className="py-2 text-white font-mono">
-                                        {formattedTx.value}
-                                      </td>
-                                      <td className="py-2 text-gray-300">
-                                        {formattedTx.date}
-                                      </td>
-                                      <td className="py-2">
-                                        <span className={`inline-flex px-2 py-1 text-xs rounded ${
-                                          formattedTx.type === 'erc20' ? 'bg-green-900 text-green-300' :
-                                          formattedTx.type === 'erc721' ? 'bg-purple-900 text-purple-300' :
-                                          'bg-blue-900 text-blue-300'
-                                        }`}>
-                                          {formattedTx.type}
-                                        </span>
-                                      </td>
-                                    </tr>
+                                                                         <tr key={txIndex} className="border-b border-gray-700 hover:bg-gray-700">
+                                       <td className="py-2 text-blue-400 font-mono text-xs">
+                                         {formattedTx.hash ? `${formattedTx.hash.slice(0, 8)}...${formattedTx.hash.slice(-6)}` : 'N/A'}
+                                       </td>
+                                       <td className="py-2 text-gray-300 font-mono text-xs">
+                                         {formattedTx.from ? formatAddress(formattedTx.from) : 'N/A'}
+                                       </td>
+                                       <td className="py-2 text-gray-300 font-mono text-xs">
+                                         {formattedTx.to ? formatAddress(formattedTx.to) : 'N/A'}
+                                       </td>
+                                       <td className="py-2 text-white font-mono">
+                                         <div>
+                                           <div>{formattedTx.value}</div>
+                                           {formattedTx.valueUSD && (
+                                             <div className="text-xs text-gray-400">${formattedTx.valueUSD}</div>
+                                           )}
+                                         </div>
+                                       </td>
+                                       <td className="py-2">
+                                         <div className="flex flex-col">
+                                           <span className="text-white font-semibold">{formattedTx.coinType}</span>
+                                           {formattedTx.tokenName && (
+                                             <span className="text-xs text-gray-400">{formattedTx.tokenName}</span>
+                                           )}
+                                         </div>
+                                       </td>
+                                       <td className="py-2 text-gray-300 text-xs">
+                                         <div>
+                                           <div>{formattedTx.date}</div>
+                                           <div>{formattedTx.time}</div>
+                                         </div>
+                                       </td>
+                                       <td className="py-2">
+                                         <span className={`inline-flex px-2 py-1 text-xs rounded ${
+                                           formattedTx.type === 'erc20' ? 'bg-green-900 text-green-300' :
+                                           formattedTx.type === 'erc721' ? 'bg-purple-900 text-purple-300' :
+                                           formattedTx.type === 'erc1155' ? 'bg-yellow-900 text-yellow-300' :
+                                           'bg-blue-900 text-blue-300'
+                                         }`}>
+                                           {formattedTx.type}
+                                         </span>
+                                       </td>
+                                     </tr>
                                   );
                                 })}
                               </tbody>
