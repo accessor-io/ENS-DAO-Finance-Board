@@ -240,30 +240,30 @@ const WalletsTable = () => {
         </p>
       </div>
       
-      <div className="overflow-x-auto">
-        <table className="min-w-full">
-          <thead className="bg-gray-800 border-b border-gray-700">
-            <tr>
-              <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                Address / ENS Name
-              </th>
-              <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                Type
-              </th>
-              <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                ETH Balance
-              </th>
-              <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                Tokens
-              </th>
-              <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                Recent TX
-              </th>
-              <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                Manager
-              </th>
-            </tr>
-          </thead>
+                     <div className="overflow-x-auto">
+                 <table className="w-full">
+                             <thead className="bg-gray-800 border-b border-gray-700">
+                     <tr>
+                       <th className="px-16 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider w-1/4">
+                         Address / ENS Name
+                       </th>
+                       <th className="px-16 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider w-1/6">
+                         Type
+                       </th>
+                       <th className="px-16 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider w-1/6">
+                         ETH Balance
+                       </th>
+                       <th className="px-16 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider w-1/6">
+                         Tokens
+                       </th>
+                       <th className="px-16 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider w-1/6">
+                         Recent TX
+                       </th>
+                       <th className="px-16 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider w-1/6">
+                         Manager
+                       </th>
+                     </tr>
+                   </thead>
           <tbody className="bg-gray-900">
             {sourceWallets.map((wallet, index) => (
               <React.Fragment key={index}>
@@ -271,55 +271,55 @@ const WalletsTable = () => {
                   className="border-b border-gray-700 hover:bg-gray-800 transition-colors duration-150 cursor-pointer"
                   onClick={() => handleRowClick(wallet.address)}
                 >
-                  <td className="px-8 py-5 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-1">
-                        <div className="text-sm font-semibold text-white font-mono">
-                          {formatAddress(wallet.address)}
-                        </div>
-                        {(wallet.ensName || wallet.label) && (
-                          <div className="text-sm text-blue-400 mt-1">{wallet.ensName || wallet.label}</div>
-                        )}
-                      </div>
-                      <div className="ml-2">
-                        <svg 
-                          className={`w-4 h-4 text-gray-400 transition-transform ${expandedWallet === wallet.address ? 'rotate-180' : ''}`}
-                          fill="none" 
-                          stroke="currentColor" 
-                          viewBox="0 0 24 24"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-8 py-5 whitespace-nowrap">
-                    <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${getTypeColor(wallet.type || wallet.category || 'other')}`}>
-                      {(wallet.type || wallet.category || 'other').replace('-', ' ')}
-                    </span>
-                  </td>
-                  <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                    {(getWalletData(wallet.address).ethBalance ?? 0).toFixed(4)} ETH
-                  </td>
-                  <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-semibold">
-                    {getTokenCount(wallet.address)} tokens
-                  </td>
-                  <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                    {getTransactionCount(wallet.address)} tx
-                  </td>
-                  <td className="px-8 py-5 whitespace-nowrap">
-                    <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${
-                      (wallet.manager || '').toLowerCase() === 'karpatkey' ? 'marble-orange text-orange-300 border border-orange-700' : 'marble-blue text-blue-300 border border-blue-700'
-                    }`}>
-                      {wallet.manager || 'ens-dao'}
-                    </span>
-                  </td>
+                                     <td className="px-16 py-5 whitespace-nowrap">
+                     <div className="flex items-center">
+                       <div className="flex-1">
+                         <div className="text-sm font-semibold text-white font-mono">
+                           {formatAddress(wallet.address)}
+                         </div>
+                         {(wallet.ensName || wallet.label) && (
+                           <div className="text-sm text-blue-400 mt-1">{wallet.ensName || wallet.label}</div>
+                         )}
+                       </div>
+                       <div className="ml-2">
+                         <svg 
+                           className={`w-4 h-4 text-gray-400 transition-transform ${expandedWallet === wallet.address ? 'rotate-180' : ''}`}
+                           fill="none" 
+                           stroke="currentColor" 
+                           viewBox="0 0 24 24"
+                         >
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                         </svg>
+                       </div>
+                     </div>
+                   </td>
+                   <td className="px-16 py-5 whitespace-nowrap">
+                     <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${getTypeColor(wallet.type || wallet.category || 'other')}`}>
+                       {(wallet.type || wallet.category || 'other').replace('-', ' ')}
+                     </span>
+                   </td>
+                   <td className="px-16 py-5 whitespace-nowrap text-sm text-white font-mono">
+                     {(getWalletData(wallet.address).ethBalance ?? 0).toFixed(4)} ETH
+                   </td>
+                   <td className="px-16 py-5 whitespace-nowrap text-sm text-white font-semibold">
+                     {getTokenCount(wallet.address)} tokens
+                   </td>
+                   <td className="px-16 py-5 whitespace-nowrap text-sm text-white font-mono">
+                     {getTransactionCount(wallet.address)} tx
+                   </td>
+                   <td className="px-16 py-5 whitespace-nowrap">
+                     <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${
+                       (wallet.manager || '').toLowerCase() === 'karpatkey' ? 'marble-orange text-orange-300 border border-orange-700' : 'marble-blue text-blue-300 border border-blue-700'
+                     }`}>
+                       {wallet.manager || 'ens-dao'}
+                     </span>
+                   </td>
                 </tr>
                 
                 {/* Expanded Transaction Section */}
                 {expandedWallet === wallet.address && (
-                  <tr className="bg-gray-800 border-b border-gray-700">
-                    <td colSpan="6" className="px-8 py-6">
+                                     <tr className="bg-gray-800 border-b border-gray-700">
+                     <td colSpan="6" className="px-16 py-6">
                       <div className="space-y-6">
                         {/* Token Holdings Section */}
                         <div>
@@ -453,7 +453,7 @@ const WalletsTable = () => {
         </table>
       </div>
       
-      <div className="px-8 py-4 bg-gray-800 border-t border-gray-700">
+                     <div className="px-12 py-4 bg-gray-800 border-t border-gray-700">
         <div className="flex justify-between text-sm">
           <span className="text-gray-400">Total Wallets: {sourceWallets.length}</span>
           <span className="text-white font-semibold">
