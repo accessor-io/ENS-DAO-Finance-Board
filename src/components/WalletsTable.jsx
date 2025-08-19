@@ -23,41 +23,63 @@ const WalletsTable = () => {
       'endaoment': 'marble-green text-green-300 border border-green-700',
       'controller': 'marble-purple text-purple-300 border border-purple-700',
       'karpatkey-managed': 'marble-orange text-orange-300 border border-orange-700',
+      'working-group': 'marble-indigo text-indigo-300 border border-indigo-700',
+      'contract': 'marble-gray text-gray-300 border border-gray-700',
+      'governance': 'marble-red text-red-300 border border-red-700',
+      'service-provider': 'marble-yellow text-yellow-300 border border-yellow-700',
       'other': 'bg-gray-800 text-gray-300 border border-gray-700'
     };
     return colors[type] || colors['other'];
   };
 
-  const [liveBalances, setLiveBalances] = useState([]);
+  const [walletData, setWalletData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   const sourceWallets = useMemo(() => walletDirectory.length ? walletDirectory : ensFinancialData.wallets, []);
-  const walletAddresses = useMemo(() => sourceWallets.map(w => w.address), [sourceWallets]);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
       setLoading(true);
       try {
-        const balances = await alchemyAPI.getETHBalances(walletAddresses);
-        if (mounted) setLiveBalances(balances);
+        const data = await alchemyAPI.getAllWalletData();
+        if (mounted) {
+          setWalletData(data);
+          setLastUpdated(new Date());
+        }
+      } catch (error) {
+        console.error('Error fetching wallet data:', error);
       } finally {
         if (mounted) setLoading(false);
       }
     })();
     return () => { mounted = false; };
-  }, [walletAddresses]);
+  }, []);
 
-  const getLiveEth = (address) => {
-    const entry = liveBalances.find(b => b.address.toLowerCase() === address.toLowerCase());
-    return entry ? entry.balanceEth : null;
+  const getWalletData = (address) => {
+    return walletData.find(w => w.address.toLowerCase() === address.toLowerCase()) || {};
+  };
+
+  const getTokenCount = (address) => {
+    const data = getWalletData(address);
+    return data.tokenBalances ? data.tokenBalances.length : 0;
+  };
+
+  const getTransactionCount = (address) => {
+    const data = getWalletData(address);
+    return data.recentTransactions ? data.recentTransactions.length : 0;
   };
 
   return (
     <div className="glass rounded-lg shadow-sm border border-gray-700 overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-700">
         <h3 className="text-lg font-semibold text-white">ENS DAO Wallets</h3>
-        <p className="text-sm text-gray-300 mt-1">Overview of all associated wallets and their balances {loading && '(refreshing...)'}</p>
+        <p className="text-sm text-gray-300 mt-1">
+          Comprehensive overview of all ENS DAO wallets, multisigs, and contracts 
+          {loading && ' (refreshing...)'}
+          {lastUpdated && ` • Last updated: ${lastUpdated.toLocaleTimeString()}`}
+        </p>
       </div>
       
       <div className="overflow-x-auto">
@@ -74,10 +96,10 @@ const WalletsTable = () => {
                 ETH Balance
               </th>
               <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                USD Value
+                Tokens
               </th>
               <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                ENS Tokens
+                Recent TX
               </th>
               <th className="px-8 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
                 Manager
@@ -103,13 +125,13 @@ const WalletsTable = () => {
                   </span>
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                  {(getLiveEth(wallet.address) ?? wallet.balance?.eth ?? 0).toLocaleString()} ETH
+                  {(getWalletData(wallet.address).ethBalance ?? 0).toFixed(4)} ETH
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-semibold">
-                  {formatCurrency(wallet.balance?.usd ?? 0)}
+                  {getTokenCount(wallet.address)} tokens
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap text-sm text-white font-mono">
-                  {(wallet.balance?.ens ?? 0).toLocaleString()} ENS
+                  {getTransactionCount(wallet.address)} tx
                 </td>
                 <td className="px-8 py-5 whitespace-nowrap">
                   <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-sm ${
@@ -128,7 +150,7 @@ const WalletsTable = () => {
         <div className="flex justify-between text-sm">
           <span className="text-gray-400">Total Wallets: {sourceWallets.length}</span>
           <span className="text-white font-semibold">
-            Combined USD Value: {formatCurrency(sourceWallets.reduce((total, wallet) => total + (wallet.balance?.usd ?? 0), 0))}
+            Total ETH: {sourceWallets.reduce((total, wallet) => total + (getWalletData(wallet.address).ethBalance ?? 0), 0).toFixed(4)} ETH
           </span>
         </div>
       </div>

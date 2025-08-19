@@ -1,5 +1,5 @@
 // Alchemy API Service for ENS DAO Blockchain Data
-const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY || 'demo';
+const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY || 'vuSlaMzdf0wbr2NwR0g6VafroZt4AhZd';
 const ALCHEMY_BASE_URL = 'https://eth-mainnet.g.alchemy.com/v2';
 const ENS_DAO_ADDRESS = '0x8f730f4aC5fd234df9993E0E317f07e44fb869C1';
 
@@ -336,6 +336,115 @@ class AlchemyAPIService {
       balanceEth: await this.getETHBalance(addr),
     }));
     return Promise.all(tasks);
+  }
+
+  // Get comprehensive wallet data including tokens and transactions
+  async getWalletComprehensiveData(address) {
+    try {
+      const [ethBalance, tokenBalances, recentTransactions] = await Promise.all([
+        this.getETHBalance(address),
+        this.getTokenBalances(address),
+        this.getRecentTransactions(address, 10)
+      ]);
+
+      return {
+        address,
+        ethBalance,
+        tokenBalances,
+        recentTransactions,
+        lastUpdated: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('Error fetching comprehensive wallet data for', address, error);
+      return {
+        address,
+        ethBalance: 0,
+        tokenBalances: [],
+        recentTransactions: [],
+        lastUpdated: new Date().toISOString()
+      };
+    }
+  }
+
+  // Get token balances for an address
+  async getTokenBalances(address) {
+    try {
+      const response = await fetch(`${this.baseURL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'alchemy_getTokenBalances',
+          params: [address]
+        })
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error.message);
+      return data.result?.tokenBalances || [];
+    } catch (error) {
+      console.error('Error fetching token balances for', address, error);
+      return [];
+    }
+  }
+
+  // Get recent transactions for an address
+  async getRecentTransactions(address, limit = 10) {
+    try {
+      const response = await fetch(`${this.baseURL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'alchemy_getAssetTransfers',
+          params: [{
+            fromBlock: '0x0',
+            toBlock: 'latest',
+            fromAddress: address,
+            category: ['external', 'internal', 'erc20', 'erc721', 'erc1155'],
+            maxCount: `0x${limit.toString(16)}`,
+            withMetadata: true
+          }]
+        })
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error.message);
+      return data.result?.transfers || [];
+    } catch (error) {
+      console.error('Error fetching recent transactions for', address, error);
+      return [];
+    }
+  }
+
+  // Get all wallet data for the directory
+  async getAllWalletData() {
+    const { walletDirectory } = await import('../data/walletDirectory');
+    const addresses = walletDirectory.map(w => w.address);
+    
+    const walletData = await Promise.all(
+      addresses.map(async (address) => {
+        try {
+          const data = await this.getWalletComprehensiveData(address);
+          const walletInfo = walletDirectory.find(w => w.address.toLowerCase() === address.toLowerCase());
+          return {
+            ...data,
+            ...walletInfo
+          };
+        } catch (error) {
+          console.error('Error fetching data for wallet', address, error);
+          return {
+            address,
+            ethBalance: 0,
+            tokenBalances: [],
+            recentTransactions: [],
+            lastUpdated: new Date().toISOString()
+          };
+        }
+      })
+    );
+
+    return walletData;
   }
 }
 
