@@ -127,6 +127,40 @@ const WalletsTable = () => {
     };
   };
 
+  const getTokenIcon = (symbol) => {
+    const icons = {
+      'ETH': '🔷',
+      'WETH': '🔷',
+      'USDC': '💙',
+      'USDT': '💚',
+      'DAI': '💛',
+      'ENS': '🌐',
+      'NFT': '🖼️',
+      'ERC20': '🪙',
+      'ERC721': '🖼️',
+      'ERC1155': '🎨'
+    };
+    return icons[symbol] || '🪙';
+  };
+
+  const getMockTokenHoldings = (address) => {
+    // Generate consistent token holdings based on address
+    const hash = address.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    
+    const tokens = [
+      { symbol: 'ETH', name: 'Ethereum', amount: (Math.abs(hash % 1000) / 100).toFixed(4), valueUSD: (Math.abs(hash % 1000) * 1.85).toFixed(2) },
+      { symbol: 'USDC', name: 'USD Coin', amount: (Math.abs(hash % 50000)).toFixed(2), valueUSD: (Math.abs(hash % 50000)).toFixed(2) },
+      { symbol: 'ENS', name: 'Ethereum Name Service', amount: (Math.abs(hash % 10000)).toFixed(2), valueUSD: (Math.abs(hash % 10000) * 0.17).toFixed(2) },
+      { symbol: 'WETH', name: 'Wrapped Ether', amount: (Math.abs(hash % 50) / 10).toFixed(4), valueUSD: (Math.abs(hash % 50) * 18.5).toFixed(2) },
+      { symbol: 'DAI', name: 'Dai Stablecoin', amount: (Math.abs(hash % 20000)).toFixed(2), valueUSD: (Math.abs(hash % 20000)).toFixed(2) }
+    ];
+    
+    return tokens.slice(0, Math.abs(hash % 4) + 1); // Return 1-4 tokens based on address
+  };
+
   return (
     <div className="glass rounded-lg shadow-sm border border-gray-700 overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-700">
@@ -218,94 +252,129 @@ const WalletsTable = () => {
                 {expandedWallet === wallet.address && (
                   <tr className="bg-gray-800 border-b border-gray-700">
                     <td colSpan="6" className="px-8 py-6">
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-lg font-semibold text-white">Last 20 Transactions</h4>
-                          <span className="text-sm text-gray-400">
-                            {transactionData[wallet.address]?.length || 0} transactions
-                          </span>
-                        </div>
-                        
-                        {transactionData[wallet.address] && transactionData[wallet.address].length > 0 ? (
-                          <div className="overflow-x-auto">
-                            <table className="min-w-full text-sm">
-                              <thead>
-                                <tr className="border-b border-gray-600">
-                                  <th className="text-left py-2 text-gray-300">Hash</th>
-                                  <th className="text-left py-2 text-gray-300">From</th>
-                                  <th className="text-left py-2 text-gray-300">To</th>
-                                  <th className="text-left py-2 text-gray-300">Value</th>
-                                  <th className="text-left py-2 text-gray-300">Coin</th>
-                                  <th className="text-left py-2 text-gray-300">Date/Time</th>
-                                  <th className="text-left py-2 text-gray-300">Type</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {transactionData[wallet.address].slice(0, 20).map((tx, txIndex) => {
-                                  const formattedTx = formatTransaction(tx);
-                                  return (
-                                                                         <tr key={txIndex} className="border-b border-gray-700 hover:bg-gray-700">
-                                       <td className="py-2 text-blue-400 font-mono text-xs">
-                                         {formattedTx.hash ? `${formattedTx.hash.slice(0, 8)}...${formattedTx.hash.slice(-6)}` : 'N/A'}
-                                       </td>
-                                       <td className="py-2 text-gray-300 font-mono text-xs">
-                                         {formattedTx.from ? formatAddress(formattedTx.from) : 'N/A'}
-                                       </td>
-                                       <td className="py-2 text-gray-300 font-mono text-xs">
-                                         {formattedTx.to ? formatAddress(formattedTx.to) : 'N/A'}
-                                       </td>
-                                       <td className="py-2 text-white font-mono">
-                                         <div>
-                                           <div>{formattedTx.value}</div>
-                                           {formattedTx.valueUSD && (
-                                             <div className="text-xs text-gray-400">${formattedTx.valueUSD}</div>
-                                           )}
-                                         </div>
-                                       </td>
-                                       <td className="py-2">
-                                         <div className="flex flex-col">
-                                           <span className="text-white font-semibold">{formattedTx.coinType}</span>
-                                           {formattedTx.tokenName && (
-                                             <span className="text-xs text-gray-400">{formattedTx.tokenName}</span>
-                                           )}
-                                         </div>
-                                       </td>
-                                       <td className="py-2 text-gray-300 text-xs">
-                                         <div>
-                                           <div>{formattedTx.date}</div>
-                                           <div>{formattedTx.time}</div>
-                                         </div>
-                                       </td>
-                                       <td className="py-2">
-                                         <span className={`inline-flex px-2 py-1 text-xs rounded ${
-                                           formattedTx.type === 'erc20' ? 'bg-green-900 text-green-300' :
-                                           formattedTx.type === 'erc721' ? 'bg-purple-900 text-purple-300' :
-                                           formattedTx.type === 'erc1155' ? 'bg-yellow-900 text-yellow-300' :
-                                           'bg-blue-900 text-blue-300'
-                                         }`}>
-                                           {formattedTx.type}
-                                         </span>
-                                       </td>
-                                     </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
+                      <div className="space-y-6">
+                        {/* Token Holdings Section */}
+                        <div>
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-lg font-semibold text-white">Token Holdings</h4>
+                            <span className="text-sm text-gray-400">
+                              {getMockTokenHoldings(wallet.address).length} tokens
+                            </span>
                           </div>
-                        ) : (
-                          <div className="text-center py-8">
-                            <div className="text-gray-400 text-sm">
-                              {transactionData[wallet.address] === undefined ? (
-                                <div className="flex items-center justify-center">
-                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div>
-                                  Loading transactions...
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {getMockTokenHoldings(wallet.address).map((token, index) => (
+                              <div key={index} className="bg-gray-700 rounded-lg p-4 border border-gray-600">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center space-x-3">
+                                    <span className="text-2xl">{getTokenIcon(token.symbol)}</span>
+                                    <div>
+                                      <div className="text-white font-semibold">{token.symbol}</div>
+                                      <div className="text-gray-400 text-sm">{token.name}</div>
+                                    </div>
+                                  </div>
+                                  <div className="text-right">
+                                    <div className="text-white font-mono">{token.amount}</div>
+                                    <div className="text-gray-400 text-sm">${token.valueUSD}</div>
+                                  </div>
                                 </div>
-                              ) : (
-                                'No recent transactions found'
-                              )}
-                            </div>
+                              </div>
+                            ))}
                           </div>
-                        )}
+                        </div>
+
+                                                {/* Transactions Section */}
+                        <div>
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-lg font-semibold text-white">Last 20 Transactions</h4>
+                            <span className="text-sm text-gray-400">
+                              {transactionData[wallet.address]?.length || 0} transactions
+                            </span>
+                          </div>
+                         
+                          {transactionData[wallet.address] && transactionData[wallet.address].length > 0 ? (
+                            <div className="overflow-x-auto">
+                              <table className="min-w-full text-sm">
+                                <thead>
+                                  <tr className="border-b border-gray-600">
+                                    <th className="text-left py-2 text-gray-300">Hash</th>
+                                    <th className="text-left py-2 text-gray-300">From</th>
+                                    <th className="text-left py-2 text-gray-300">To</th>
+                                    <th className="text-left py-2 text-gray-300">Value</th>
+                                    <th className="text-left py-2 text-gray-300">Coin</th>
+                                    <th className="text-left py-2 text-gray-300">Date/Time</th>
+                                    <th className="text-left py-2 text-gray-300">Type</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {transactionData[wallet.address].slice(0, 20).map((tx, txIndex) => {
+                                    const formattedTx = formatTransaction(tx);
+                                    return (
+                                      <tr key={txIndex} className="border-b border-gray-700 hover:bg-gray-700">
+                                        <td className="py-2 text-blue-400 font-mono text-xs">
+                                          {formattedTx.hash ? `${formattedTx.hash.slice(0, 8)}...${formattedTx.hash.slice(-6)}` : 'N/A'}
+                                        </td>
+                                        <td className="py-2 text-gray-300 font-mono text-xs">
+                                          {formattedTx.from ? formatAddress(formattedTx.from) : 'N/A'}
+                                        </td>
+                                        <td className="py-2 text-gray-300 font-mono text-xs">
+                                          {formattedTx.to ? formatAddress(formattedTx.to) : 'N/A'}
+                                        </td>
+                                        <td className="py-2 text-white font-mono">
+                                          <div>
+                                            <div>{formattedTx.value}</div>
+                                            {formattedTx.valueUSD && (
+                                              <div className="text-xs text-gray-400">${formattedTx.valueUSD}</div>
+                                            )}
+                                          </div>
+                                        </td>
+                                        <td className="py-2">
+                                          <div className="flex items-center space-x-2">
+                                            <span className="text-lg">{getTokenIcon(formattedTx.coinType)}</span>
+                                            <div className="flex flex-col">
+                                              <span className="text-white font-semibold">{formattedTx.coinType}</span>
+                                              {formattedTx.tokenName && (
+                                                <span className="text-xs text-gray-400">{formattedTx.tokenName}</span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </td>
+                                        <td className="py-2 text-gray-300 text-xs">
+                                          <div>
+                                            <div>{formattedTx.date}</div>
+                                            <div>{formattedTx.time}</div>
+                                          </div>
+                                        </td>
+                                        <td className="py-2">
+                                          <span className={`inline-flex px-2 py-1 text-xs rounded ${
+                                            formattedTx.type === 'erc20' ? 'bg-green-900 text-green-300' :
+                                            formattedTx.type === 'erc721' ? 'bg-purple-900 text-purple-300' :
+                                            formattedTx.type === 'erc1155' ? 'bg-yellow-900 text-yellow-300' :
+                                            'bg-blue-900 text-blue-300'
+                                          }`}>
+                                            {formattedTx.type}
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          ) : (
+                            <div className="text-center py-8">
+                              <div className="text-gray-400 text-sm">
+                                {transactionData[wallet.address] === undefined ? (
+                                  <div className="flex items-center justify-center">
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div>
+                                    Loading transactions...
+                                  </div>
+                                ) : (
+                                  'No recent transactions found'
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </td>
                   </tr>
