@@ -129,18 +129,86 @@ const WalletsTable = () => {
 
   const getTokenIcon = (symbol) => {
     const icons = {
-      'ETH': '🔷',
-      'WETH': '🔷',
-      'USDC': '💙',
-      'USDT': '💚',
-      'DAI': '💛',
-      'ENS': '🌐',
-      'NFT': '🖼️',
-      'ERC20': '🪙',
-      'ERC721': '🖼️',
-      'ERC1155': '🎨'
+      'ETH': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#627EEA"/>
+          <path d="M16.498 4v8.87l7.497 3.35z" fill="#fff" fillOpacity="0.602"/>
+          <path d="M16.498 4L9 16.22l7.498-3.35z" fill="#fff"/>
+          <path d="M16.498 21.968v6.027L24 17.616z" fill="#fff" fillOpacity="0.602"/>
+          <path d="M16.498 27.995v-6.028L9 17.616z" fill="#fff"/>
+          <path d="M16.498 20.573l7.497-4.353-7.497-3.348z" fill="#fff" fillOpacity="0.2"/>
+          <path d="M9 16.22l7.498 4.353v-7.701z" fill="#fff" fillOpacity="0.602"/>
+        </svg>
+      ),
+      'WETH': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#627EEA"/>
+          <path d="M16.498 4v8.87l7.497 3.35z" fill="#fff" fillOpacity="0.602"/>
+          <path d="M16.498 4L9 16.22l7.498-3.35z" fill="#fff"/>
+          <path d="M16.498 21.968v6.027L24 17.616z" fill="#fff" fillOpacity="0.602"/>
+          <path d="M16.498 27.995v-6.028L9 17.616z" fill="#fff"/>
+          <path d="M16.498 20.573l7.497-4.353-7.497-3.348z" fill="#fff" fillOpacity="0.2"/>
+          <path d="M9 16.22l7.498 4.353v-7.701z" fill="#fff" fillOpacity="0.602"/>
+        </svg>
+      ),
+      'USDC': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#2775CA"/>
+          <path d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12 12-5.373 12-12S22.627 4 16 4zm0 22C10.486 26 6 21.514 6 16S10.486 6 16 6s10 4.486 10 10-4.486 10-10 10z" fill="#fff"/>
+          <path d="M16 8c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 12c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z" fill="#2775CA"/>
+        </svg>
+      ),
+      'USDT': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#26A17B"/>
+          <path d="M17.922 17.383h-.002c-.11.008-.677.042-1.942.042-1.01 0-1.721-.03-1.971-.042h-.003c-.3-.018-.526-.03-.526-.472 0-.442.226-.454.526-.472.254-.018 1.003-.042 1.971-.042 1.265 0 1.832.03 1.942.042h.002c.3.018.526.03.526.472 0 .442-.226.454-.526.472zm-1.942-1.5c-1.01 0-1.721-.03-1.971-.042h-.003c-.3-.018-.526-.03-.526-.472 0-.442.226-.454.526-.472.254-.018 1.003-.042 1.971-.042 1.265 0 1.832.03 1.942.042h.002c.3.018.526.03.526.472 0 .442-.226.454-.526.472zm-1.942-1.5c-1.01 0-1.721-.03-1.971-.042h-.003c-.3-.018-.526-.03-.526-.472 0-.442.226-.454.526-.472.254-.018 1.003-.042 1.971-.042 1.265 0 1.832.03 1.942.042h.002c.3.018.526.03.526.472 0 .442-.226.454-.526.472z" fill="#fff"/>
+        </svg>
+      ),
+      'DAI': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#F5AC37"/>
+          <path d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12 12-5.373 12-12S22.627 4 16 4zm0 22C10.486 26 6 21.514 6 16S10.486 6 16 6s10 4.486 10 10-4.486 10-10 10z" fill="#fff"/>
+          <path d="M16 8c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 12c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z" fill="#F5AC37"/>
+        </svg>
+      ),
+      'ENS': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#5E4FDB"/>
+          <path d="M8 8h16v16H8z" fill="#fff"/>
+          <path d="M12 12h8v8h-8z" fill="#5E4FDB"/>
+          <path d="M14 14h4v4h-4z" fill="#fff"/>
+        </svg>
+      ),
+      'NFT': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#FF6B6B"/>
+          <path d="M8 8h16v16H8z" fill="#fff"/>
+          <path d="M12 12h8v8h-8z" fill="#FF6B6B"/>
+        </svg>
+      ),
+      'ERC20': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#6C757D"/>
+          <path d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12 12-5.373 12-12S22.627 4 16 4zm0 22C10.486 26 6 21.514 6 16S10.486 6 16 6s10 4.486 10 10-4.486 10-10 10z" fill="#fff"/>
+          <path d="M16 8c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 12c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z" fill="#6C757D"/>
+        </svg>
+      ),
+      'ERC721': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#9C27B0"/>
+          <path d="M8 8h16v16H8z" fill="#fff"/>
+          <path d="M12 12h8v8h-8z" fill="#9C27B0"/>
+        </svg>
+      ),
+      'ERC1155': (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z" fill="#FF9800"/>
+          <path d="M8 8h16v16H8z" fill="#fff"/>
+          <path d="M12 12h8v8h-8z" fill="#FF9800"/>
+        </svg>
+      )
     };
-    return icons[symbol] || '🪙';
+    return icons[symbol] || icons['ERC20'];
   };
 
   const getMockTokenHoldings = (address) => {
@@ -266,7 +334,7 @@ const WalletsTable = () => {
                               <div key={index} className="bg-gray-700 rounded-lg p-4 border border-gray-600">
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center space-x-3">
-                                    <span className="text-2xl">{getTokenIcon(token.symbol)}</span>
+                                    <div className="flex-shrink-0">{getTokenIcon(token.symbol)}</div>
                                     <div>
                                       <div className="text-white font-semibold">{token.symbol}</div>
                                       <div className="text-gray-400 text-sm">{token.name}</div>
@@ -329,7 +397,7 @@ const WalletsTable = () => {
                                         </td>
                                         <td className="py-2">
                                           <div className="flex items-center space-x-2">
-                                            <span className="text-lg">{getTokenIcon(formattedTx.coinType)}</span>
+                                            <div className="flex-shrink-0">{getTokenIcon(formattedTx.coinType)}</div>
                                             <div className="flex flex-col">
                                               <span className="text-white font-semibold">{formattedTx.coinType}</span>
                                               {formattedTx.tokenName && (
