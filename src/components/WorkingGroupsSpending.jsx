@@ -99,17 +99,13 @@ const WorkingGroupsSpending = () => {
             {filteredGroups.map((group, index) => (
               <React.Fragment key={group.name}>
                 <tr className="hover:bg-slate-25 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-slate-900">{group.name}</div>
-                    <div className="text-xs text-slate-500 mt-1">
-                      Primary Focus: {group.initiatives[0]?.name || 'Various Initiatives'}
-                    </div>
+                  <td className="px-6 py-3">
+                    <span className="font-medium text-slate-900">{group.name} - {group.initiatives[0]?.name || 'Various Initiatives'}</span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="font-medium text-slate-900">
-                      {formatCurrency(group.spending)}
-                    </div>
-                    <div className="text-xs text-slate-500">{group.currency}</div>
+                  <td className="px-6 py-3 text-right">
+                    <span className="font-medium text-slate-900">
+                      {formatCurrency(group.spending)} {group.currency}
+                    </span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end">
