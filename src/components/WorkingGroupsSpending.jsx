@@ -108,17 +108,9 @@ const WorkingGroupsSpending = () => {
                     </span>
                   </td>
                   <td className="px-4 py-2 text-right">
-                    <div className="flex items-center justify-end">
-                      <div className="w-20 bg-slate-200 rounded-full h-1.5 mr-3">
-                        <div 
-                          className="bg-slate-600 h-1.5 rounded-full transition-all duration-500"
-                          style={{ width: `${(group.spending / q1Data.totalSpending) * 100}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-sm font-medium text-slate-900 w-12">
-                        {((group.spending / q1Data.totalSpending) * 100).toFixed(1)}%
-                      </span>
-                    </div>
+                    <span className="text-sm font-medium text-slate-900">
+                      {((group.spending / q1Data.totalSpending) * 100).toFixed(1)}%
+                    </span>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
