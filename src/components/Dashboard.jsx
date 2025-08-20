@@ -204,8 +204,8 @@ const OverviewContent = () => {
       </div>
 
       {/* Working Groups Financial Analysis */}
-      <div className="border-b border-slate-200 pb-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="border-b border-slate-200 pb-3">
+        <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
             Working Groups Financial Analysis
           </h3>
