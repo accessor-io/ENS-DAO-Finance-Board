@@ -204,52 +204,33 @@ const OverviewContent = () => {
       </div>
 
       {/* Working Groups Financial Analysis */}
-      <div className="bg-white border border-slate-200 rounded-sm">
-        <div className="px-6 py-4 border-b border-slate-100">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
-              Working Groups Financial Analysis
-            </h3>
-            <span className="text-xs text-slate-500">Q1 2025 Performance</span>
-          </div>
+      <div className="border-b border-slate-200 pb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
+            Working Groups Financial Analysis
+          </h3>
+          <span className="text-xs text-slate-500">Q1 2025 Performance</span>
         </div>
-        <div className="p-6">
-          <WorkingGroupsSpending />
-        </div>
+        <WorkingGroupsSpending />
       </div>
 
       {/* Key Performance Indicators */}
-      <div className="grid grid-cols-4 gap-6">
-        <div className="bg-white border border-slate-200 rounded-sm p-6">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-            Transaction Volume
-          </div>
-          <div className="text-2xl font-light text-slate-900 mb-1">1,247</div>
-          <div className="text-xs text-emerald-600 font-medium">+156 today</div>
+      <div className="grid grid-cols-4 gap-8 py-4">
+        <div className="text-center">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Transaction Volume</div>
+          <div className="text-xl font-light text-slate-900">1,247 (+156 today)</div>
         </div>
-
-        <div className="bg-white border border-slate-200 rounded-sm p-6">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-            Active Working Groups
-          </div>
-          <div className="text-2xl font-light text-slate-900 mb-1">3</div>
-          <div className="text-xs text-slate-600 font-medium">Operational</div>
+        <div className="text-center">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Working Groups</div>
+          <div className="text-xl font-light text-slate-900">3 (Operational)</div>
         </div>
-
-        <div className="bg-white border border-slate-200 rounded-sm p-6">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-            Governance Tokens Issued
-          </div>
-          <div className="text-2xl font-light text-slate-900 mb-1">25,215</div>
-          <div className="text-xs text-slate-600 font-medium">Q1 2025</div>
+        <div className="text-center">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Governance Tokens Issued</div>
+          <div className="text-xl font-light text-slate-900">25,215 (Q1 2025)</div>
         </div>
-
-        <div className="bg-white border border-slate-200 rounded-sm p-6">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-            System Availability
-          </div>
-          <div className="text-2xl font-light text-slate-900 mb-1">99.97%</div>
-          <div className="text-xs text-emerald-600 font-medium">All systems operational</div>
+        <div className="text-center">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">System Availability</div>
+          <div className="text-xl font-light text-slate-900">99.97% (Operational)</div>
         </div>
       </div>
     </div>
