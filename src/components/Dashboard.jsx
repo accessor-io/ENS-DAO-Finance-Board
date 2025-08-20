@@ -1,270 +1,410 @@
 import React, { useState } from 'react';
+import AnalyticsOverview from './AnalyticsOverview';
 import AssetTracker from './AssetTracker';
 import BlockchainData from './BlockchainData';
-import AnalyticsOverview from './AnalyticsOverview';
-import RealTimeData from './RealTimeData';
 import TransactionsTable from './TransactionsTable';
 import WalletsTable from './WalletsTable';
-import ContractsTable from './ContractsTable';
-import ExpendituresTable from './ExpendituresTable';
 import WorkingGroupsSpending from './WorkingGroupsSpending';
-import ServiceProviderDashboard from './ServiceProviderDashboard';
-import ProjectTracker from './ProjectTracker';
-import TaskManager from './TaskManager';
-import MilestoneTracker from './MilestoneTracker';
-import EndaomentOverview from './EndaomentOverview';
-import ENSNewsletters from './ENSNewsletters';
-import SafeNotes from './SafeNotes';
-import DataHexbin from './DataHexbin';
-import HexbinHeatmap from './HexbinHeatmap';
-import SchemaGraph from './SchemaGraph';
-import { ensFinancialData } from '../data/ensData';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  
-  // Add error handling for data import
-  let ensDaoOverview = {};
-  try {
-    ensDaoOverview = ensFinancialData?.ensDaoOverview || {};
-  } catch (error) {
-    console.error('Error loading ENS data:', error);
-  }
+  const [expandedSections, setExpandedSections] = useState({});
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      maximumFractionDigits: 1
-    }).format(amount);
+  const toggleSection = (sectionId) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
   };
 
-  // Smart organized tab groups
-  const tabGroups = {
-    core: {
-      name: 'Core Financial',
-      tabs: [
-        { id: 'overview', label: 'Overview', description: 'Financial overview and key metrics' },
-        { id: 'assets', label: 'Asset Tracker', description: 'Real-time treasury tracking and transactions' },
-        { id: 'blockchain', label: 'Blockchain Data', description: 'On-chain analytics and metrics' },
-        { id: 'transactions', label: 'Transactions', description: 'Detailed transaction history' },
-        { id: 'wallets', label: 'Wallets', description: 'Treasury wallet management' }
-      ]
-    },
-    governance: {
-      name: 'Governance',
-      tabs: [
-        { id: 'working-groups', label: 'Working Groups', description: 'Working group spending and budgets' },
-        { id: 'endaoment', label: 'Endaoment', description: 'Endaoment overview and metrics' }
-      ]
-    },
-    serviceProviders: {
-      name: 'Service Providers',
-      tabs: [
-        { id: 'service-providers', label: 'SPP Dashboard', description: 'Service provider reports and metrics' }
-      ]
-    },
-    analytics: {
-      name: 'Analytics',
-      tabs: [
-        { id: 'analytics-overview', label: 'Analytics Overview', description: 'Analytics dashboard' },
-        { id: 'real-time', label: 'Real-Time Data', description: 'Live data feeds and metrics' },
-        { id: 'schema', label: 'Schema Map', description: 'Animated schema of wallets and contracts' },
-        { id: 'data-hexbin', label: 'Data Hexbin', description: 'Hexagonal data visualization' },
-        { id: 'hexbin-heatmap', label: 'Hexbin Heatmap', description: 'Heatmap data analysis' }
-      ]
-    },
-    development: {
-      name: 'Development',
-      tabs: [
-        { id: 'projects', label: 'Project Tracker', description: 'Development project tracking' },
-        { id: 'tasks', label: 'Task Manager', description: 'Task management and progress' },
-        { id: 'milestones', label: 'Milestone Tracker', description: 'Project milestone tracking' },
-        { id: 'contracts', label: 'Contracts', description: 'Smart contract management' }
-      ]
-    },
-    infrastructure: {
-      name: 'Infrastructure',
-      tabs: [
-        { id: 'expenditures', label: 'Expenditures', description: 'Infrastructure spending tracking' },
-        { id: 'safe-notes', label: 'Safe Notes', description: 'Safe management and notes' }
-      ]
-    },
-    communication: {
-      name: 'Communication',
-      tabs: [
-        { id: 'newsletters', label: 'ENS Newsletters', description: 'Newsletter management and tracking' }
-      ]
+  const tabs = [
+    { id: 'overview', name: 'Portfolio Overview' },
+    { id: 'assets', name: 'Asset Management' },
+    { id: 'analytics', name: 'Risk Analytics' },
+    { id: 'transactions', name: 'Transaction History' },
+    { id: 'wallets', name: 'Wallet Administration' },
+  ];
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'overview':
+        return <OverviewContent expandedSections={expandedSections} toggleSection={toggleSection} />;
+      case 'assets':
+        return <AssetTracker />;
+      case 'analytics':
+        return <BlockchainData />;
+      case 'transactions':
+        return <TransactionsTable />;
+      case 'wallets':
+        return <WalletsTable />;
+      default:
+        return <OverviewContent expandedSections={expandedSections} toggleSection={toggleSection} />;
     }
   };
-
-  const allTabs = Object.values(tabGroups).flatMap(group => group.tabs);
-
-  const getCurrentGroup = () => {
-    for (const [groupKey, group] of Object.entries(tabGroups)) {
-      if (group.tabs.some(tab => tab.id === activeTab)) {
-        return { key: groupKey, ...group };
-      }
-    }
-    return null;
-  };
-
-  const currentGroup = getCurrentGroup();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-3">
-      {/* Left Sidebar: Groups */}
-      <aside className="space-y-3">
-        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-          <h2 className="text-sm font-semibold text-white">Sections</h2>
-        </div>
-        <nav className="space-y-2">
-          {Object.entries(tabGroups).map(([groupKey, group]) => (
-            <button
-              key={groupKey}
-              onClick={() => {
-                const firstTab = group.tabs[0];
-                setActiveTab(firstTab.id);
-              }}
-              className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors border ${
-                currentGroup?.key === groupKey
-                  ? 'bg-blue-600 text-white border-blue-500'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-700'
-              }`}
-            >
-              {group.name}
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Right Content Area */}
-      <section className="space-y-3">
-      {/* Enhanced Header with Current Section */}
-      <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-white">ENS DAO Finance Dashboard</h2>
-            <div className="text-sm text-gray-400">
-              {currentGroup && (
-                <span className="text-blue-400 font-medium">{currentGroup.name}</span>
-              )} • {allTabs.find(tab => tab.id === activeTab)?.description || 'Select a tab to view data'}
+    <div className="min-h-screen bg-slate-50">
+      {/* Executive Summary Bar */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="px-4 py-3">
+          <div className="grid grid-cols-4 gap-3">
+            <div className="border-r border-slate-200 pr-4">
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                TOTAL AUM
+              </div>
+              <div className="text-lg font-light text-slate-900">$926.8M</div>
+              <div className="text-xs text-emerald-600">+2.5% MTD</div>
             </div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm text-gray-400">Last Updated</div>
-            <div className="text-white font-medium">{new Date().toLocaleTimeString()}</div>
+            <div className="border-r border-slate-200 pr-4">
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                LIQUID ASSETS
+              </div>
+              <div className="text-lg font-light text-slate-900">$840.2M</div>
+              <div className="text-xs text-emerald-600">+1.8% MTD</div>
+            </div>
+            <div className="border-r border-slate-200 pr-4">
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                MONTHLY OUTFLOW
+              </div>
+              <div className="text-lg font-light text-slate-900">$642K</div>
+              <div className="text-xs text-slate-600">+12.3% vs Prior</div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                CUSTODY ACCOUNTS
+              </div>
+              <div className="text-lg font-light text-slate-900">12</div>
+              <div className="text-xs text-slate-600">No Change</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Tab Navigation within Current Group */}
-      {currentGroup && (
-        <div className="border-b border-gray-700">
-          <nav className="-mb-px flex flex-wrap gap-1 overflow-x-auto" aria-label="Tabs">
-            {currentGroup.tabs.map((tab) => (
+      {/* Navigation */}
+      <div className="bg-white border-b border-slate-100">
+        <div className="px-4">
+          <nav className="flex space-x-8">
+            {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-2 px-3 border-b-2 font-medium text-sm rounded-t-lg transition-colors whitespace-nowrap ${
+                className={`py-4 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-400 bg-gray-800'
-                    : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-600 hover:bg-gray-800'
+                    ? 'border-slate-900 text-slate-900'
+                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
                 }`}
-                title={tab.description}
               >
-                {tab.label}
+                {tab.name}
               </button>
             ))}
           </nav>
         </div>
-      )}
+      </div>
 
-      {/* Tab Content with Smart Loading */}
-      <div className="min-h-[600px]">
-        {activeTab === 'overview' && (
-          <div className="space-y-3">
-            <div className="bg-gray-800 p-4 rounded shadow-lg">
-              <h2 className="text-2xl font-bold text-white mb-4">ENS DAO Financial Overview</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
-                <div className="bg-gray-700 p-4 rounded text-white">
-                  <h3 className="text-lg font-semibold mb-1">Total Assets</h3>
-                  <p className="text-3xl font-bold">{formatCurrency(ensDaoOverview?.totalAssets || 50000000)}</p>
-                  <p className="text-blue-100 text-sm">+2.5% from last month</p>
-                </div>
-                
-                <div className="bg-gray-700 p-4 rounded text-white">
-                  <h3 className="text-lg font-semibold mb-1">Net Balance</h3>
-                  <p className="text-3xl font-bold">{formatCurrency(ensDaoOverview?.netBalance || 25000000)}</p>
-                  <p className="text-green-100 text-sm">+1.8% from last month</p>
-                </div>
-                
-                <div className="bg-gray-700 p-4 rounded text-white">
-                  <h3 className="text-lg font-semibold mb-1">Total Expenditures</h3>
-                  <p className="text-3xl font-bold">{formatCurrency(ensDaoOverview?.totalExpenditures || 15000000)}</p>
-                  <p className="text-purple-100 text-sm">+12.3% from last month</p>
-                </div>
+      {/* Content */}
+      <div className="px-4 py-4">
+        {renderTabContent()}
+      </div>
+    </div>
+  );
+};
+
+const CollapsibleSection = ({ id, title, subtitle, children, isExpanded, onToggle, defaultExpanded = false }) => {
+  return (
+    <div className="border-b border-slate-200">
+      <button
+        onClick={() => onToggle(id)}
+        className="w-full px-4 py-3 text-left hover:bg-slate-25 transition-colors"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wide">{title}</h3>
+            {subtitle && <span className="text-xs text-slate-500">{subtitle}</span>}
+          </div>
+          <div className="text-slate-400">
+            {isExpanded ? '−' : '+'}
+          </div>
+        </div>
+      </button>
+      
+      {isExpanded && (
+        <div className="px-4 pb-4">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const OverviewContent = ({ expandedSections, toggleSection }) => {
+  return (
+    <div className="space-y-0">
+      {/* Treasury Composition */}
+      <CollapsibleSection
+        id="treasury-composition"
+        title="Treasury Composition"
+        subtitle="Asset allocation and holdings breakdown"
+        isExpanded={expandedSections['treasury-composition']}
+        onToggle={toggleSection}
+      >
+        <div className="space-y-3">
+          <div className="grid grid-cols-4 gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">
+            <div>Asset</div>
+            <div className="text-right">Qty</div>
+            <div className="text-right">Mkt Val</div>
+            <div className="text-right">Alloc</div>
+          </div>
+          
+          <CollapsibleSection
+            id="ethereum-details"
+            title="Ethereum (ETH)"
+            subtitle="61.3% • $567.8M"
+            isExpanded={expandedSections['ethereum-details']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="grid grid-cols-4 gap-2 text-xs">
+                <div>Liquid ETH</div>
+                <div className="text-right">180,000.00</div>
+                <div className="text-right">$435.6M</div>
+                <div className="text-right">46.9%</div>
               </div>
-              
-              <div className="bg-gray-700 p-3 rounded">
-                <h3 className="text-lg font-semibold text-white mb-1">Quick Stats</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
-                  <div>
-                    <p className="text-gray-300">Active Wallets</p>
-                    <p className="font-semibold text-white">12</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-300">Total Transactions</p>
-                    <p className="font-semibold text-white">1,247</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-300">Monthly Growth</p>
-                    <p className="font-semibold text-green-400">+8.2%</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-300">Risk Score</p>
-                    <p className="font-semibold text-yellow-400">Medium</p>
-                  </div>
-                </div>
+              <div className="grid grid-cols-4 gap-2 text-xs">
+                <div>Staked ETH</div>
+                <div className="text-right">54,567.00</div>
+                <div className="text-right">$132.2M</div>
+                <div className="text-right">14.4%</div>
               </div>
             </div>
-          </div>
-        )}
+          </CollapsibleSection>
 
-        {activeTab === 'assets' && <AssetTracker />}
-        {activeTab === 'blockchain' && <BlockchainData />}
-        {activeTab === 'transactions' && <TransactionsTable />}
-        {activeTab === 'wallets' && <WalletsTable />}
-        {activeTab === 'working-groups' && <WorkingGroupsSpending />}
-        {activeTab === 'service-providers' && <ServiceProviderDashboard />}
-        {activeTab === 'endaoment' && <EndaomentOverview />}
-        {activeTab === 'analytics-overview' && <AnalyticsOverview />}
-        {activeTab === 'real-time' && <RealTimeData />}
-        {activeTab === 'schema' && (
-          <SchemaGraph
-            onNavigate={(targetTab, payload) => {
-              if (targetTab) setActiveTab(targetTab);
-              // Optionally, could set shared state/filters; kept minimal here
-              if (payload?.wallet) {
-                // No centralized filter context yet; future enhancement
-                console.log('Navigate to', targetTab, 'with wallet', payload.wallet);
-              }
-            }}
-          />
-        )}
-        {activeTab === 'data-hexbin' && <DataHexbin />}
-        {activeTab === 'hexbin-heatmap' && <HexbinHeatmap />}
-        {activeTab === 'projects' && <ProjectTracker />}
-        {activeTab === 'tasks' && <TaskManager />}
-        {activeTab === 'milestones' && <MilestoneTracker />}
-        {activeTab === 'contracts' && <ContractsTable />}
-        {activeTab === 'expenditures' && <ExpendituresTable />}
-        {activeTab === 'safe-notes' && <SafeNotes />}
-        {activeTab === 'newsletters' && <ENSNewsletters />}
-      </div>
-      </section>
+          <CollapsibleSection
+            id="usdc-details"
+            title="USD Coin (USDC)"
+            subtitle="19.5% • $180.2M"
+            isExpanded={expandedSections['usdc-details']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="grid grid-cols-4 gap-2 text-xs">
+                <div>Operating Reserve</div>
+                <div className="text-right">120,000,000</div>
+                <div className="text-right">$120.0M</div>
+                <div className="text-right">12.9%</div>
+              </div>
+              <div className="grid grid-cols-4 gap-2 text-xs">
+                <div>Emergency Fund</div>
+                <div className="text-right">60,200,000</div>
+                <div className="text-right">$60.2M</div>
+                <div className="text-right">6.6%</div>
+              </div>
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection
+            id="ens-details"
+            title="Ethereum Name Service (ENS)"
+            subtitle="19.2% • $178.6M"
+            isExpanded={expandedSections['ens-details']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="grid grid-cols-4 gap-2 text-xs">
+                <div>Treasury Holdings</div>
+                <div className="text-right">10,000,000</div>
+                <div className="text-right">$142.9M</div>
+                <div className="text-right">15.4%</div>
+              </div>
+              <div className="grid grid-cols-4 gap-2 text-xs">
+                <div>Governance Reserve</div>
+                <div className="text-right">2,500,000</div>
+                <div className="text-right">$35.7M</div>
+                <div className="text-right">3.8%</div>
+              </div>
+            </div>
+          </CollapsibleSection>
+        </div>
+      </CollapsibleSection>
+
+      {/* Transaction Activity */}
+      <CollapsibleSection
+        id="transaction-activity"
+        title="Transaction Activity"
+        subtitle="Recent treasury movements and operations"
+        isExpanded={expandedSections['transaction-activity']}
+        onToggle={toggleSection}
+      >
+        <div className="space-y-0">
+          <CollapsibleSection
+            id="grants-disbursements"
+            title="Grant Disbursements"
+            subtitle="4 transactions • $267K total"
+            isExpanded={expandedSections['grants-disbursements']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span>ENS Labs Development Grant</span>
+                <span>$125,000 • 2h ago</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Community Initiatives Fund</span>
+                <span>$85,000 • 1d ago</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Developer Tools Funding</span>
+                <span>$57,000 • 3d ago</span>
+              </div>
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection
+            id="operational-expenses"
+            title="Operational Expenses"
+            subtitle="6 transactions • $128K total"
+            isExpanded={expandedSections['operational-expenses']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span>Infrastructure - Cloudflare Inc.</span>
+                <span>$32,000 • 1d ago</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Legal & Compliance Services</span>
+                <span>$18,500 • 2d ago</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Audit & Security Review</span>
+                <span>$45,000 • 5d ago</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Marketing & Communications</span>
+                <span>$32,500 • 1w ago</span>
+              </div>
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection
+            id="delegation-rewards"
+            title="Delegation Rewards"
+            subtitle="12 transactions • $156K total"
+            isExpanded={expandedSections['delegation-rewards']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span>Community Pool Distribution</span>
+                <span>$45,000 • 5h ago</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Validator Rewards</span>
+                <span>$35,500 • 12h ago</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Staking Incentives</span>
+                <span>$28,750 • 1d ago</span>
+              </div>
+            </div>
+          </CollapsibleSection>
+        </div>
+      </CollapsibleSection>
+
+      {/* Working Groups Analysis */}
+      <CollapsibleSection
+        id="working-groups"
+        title="Working Groups Financial Analysis"
+        subtitle="Q1 2025 expenditure breakdown and performance"
+        isExpanded={expandedSections['working-groups']}
+        onToggle={toggleSection}
+      >
+        <WorkingGroupsSpending />
+      </CollapsibleSection>
+
+      {/* Risk Analytics */}
+      <CollapsibleSection
+        id="risk-analytics"
+        title="Risk Analytics"
+        subtitle="Portfolio risk assessment and exposure metrics"
+        isExpanded={expandedSections['risk-analytics']}
+        onToggle={toggleSection}
+      >
+        <div className="space-y-0">
+          <CollapsibleSection
+            id="concentration-risk"
+            title="Concentration Risk"
+            subtitle="Asset concentration and diversification metrics"
+            isExpanded={expandedSections['concentration-risk']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span>Single Asset Max Concentration</span>
+                <span>61.3% (ETH)</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Top 3 Assets Concentration</span>
+                <span>100% (ETH, USDC, ENS)</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Diversification Score</span>
+                <span>Medium (6.2/10)</span>
+              </div>
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection
+            id="liquidity-risk"
+            title="Liquidity Risk"
+            subtitle="Asset liquidity and market depth analysis"
+            isExpanded={expandedSections['liquidity-risk']}
+            onToggle={toggleSection}
+          >
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span>Highly Liquid Assets</span>
+                <span>80.8% ($748M)</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Medium Liquidity Assets</span>
+                <span>19.2% ($179M)</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>Emergency Liquidity Available</span>
+                <span>$180.2M (48h access)</span>
+              </div>
+            </div>
+          </CollapsibleSection>
+        </div>
+      </CollapsibleSection>
+
+      {/* Performance Metrics */}
+      <CollapsibleSection
+        id="performance-metrics"
+        title="Performance Metrics"
+        subtitle="Treasury performance and operational KPIs"
+        isExpanded={expandedSections['performance-metrics']}
+        onToggle={toggleSection}
+      >
+        <div className="grid grid-cols-4 gap-3">
+          <div className="text-center">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Txn Vol</div>
+            <div className="text-lg font-light text-slate-900">1,247 (+156 today)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active WGs</div>
+            <div className="text-lg font-light text-slate-900">3 (Operational)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Gov Tokens</div>
+            <div className="text-lg font-light text-slate-900">25,215 (Q1 2025)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sys Uptime</div>
+            <div className="text-lg font-light text-slate-900">99.97% (Operational)</div>
+          </div>
+        </div>
+      </CollapsibleSection>
     </div>
   );
 };

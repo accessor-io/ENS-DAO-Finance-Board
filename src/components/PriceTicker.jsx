@@ -42,10 +42,10 @@ export default function PriceTicker() {
     const price = prices[symbol];
     const change = changes[symbol] ?? 0;
     const up = change >= 0;
-    const color = up ? 'bg-green-600' : 'bg-red-600';
+    const color = up ? 'text-green-600' : 'text-red-600';
     const arrow = up ? '↗' : '↘';
     return (
-      <span key={symbol} className={`${color} px-2 py-1 rounded`}> 
+      <span key={symbol} className={`${color} text-xs`}>
         {symbol}: {price ? `$${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}` : '—'} {arrow}
       </span>
     );
@@ -53,12 +53,9 @@ export default function PriceTicker() {
 
   return (
     <div className="flex items-center justify-end">
-      <div className="flex space-x-4 text-sm">
+      <div className="flex space-x-3 text-xs">
         {pairs.map(p => badge(p.symbol))}
       </div>
     </div>
   );
 }
-
-
-
