@@ -103,25 +103,25 @@ const Dashboard = () => {
 
 const OverviewContent = () => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Portfolio Allocation & Activity */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-4">
         {/* Portfolio Composition */}
         <div className="col-span-2">
-          <div className="bg-white border-b border-slate-200 pb-4">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white border-b border-slate-200 pb-2">
+            <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
                 Portfolio Composition
               </h3>
               <span className="text-xs text-slate-500">As of {new Date().toLocaleDateString()}</span>
             </div>
             <div>
-              <div className="space-y-6">
-                <div className="grid grid-cols-4 gap-4 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-3">
+              <div className="space-y-3">
+                <div className="grid grid-cols-4 gap-4 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">
                   <div>Asset</div>
-                  <div className="text-right">Holdings</div>
-                  <div className="text-right">Market Value</div>
-                  <div className="text-right">Allocation</div>
+                  <div className="text-right">Qty</div>
+                  <div className="text-right">Mkt Val</div>
+                  <div className="text-right">Alloc</div>
                 </div>
                 
                 <div className="grid grid-cols-4 gap-4 items-center py-2 border-b border-slate-100">
