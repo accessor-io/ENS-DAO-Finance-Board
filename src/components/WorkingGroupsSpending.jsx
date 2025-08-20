@@ -47,7 +47,7 @@ const WorkingGroupsSpending = () => {
       </div>
 
       {/* Group Filter */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex gap-3 mb-3">
         <span
           onClick={() => setSelectedGroup('all')}
           className={`text-sm cursor-pointer ${
