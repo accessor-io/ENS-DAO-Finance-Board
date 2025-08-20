@@ -26,9 +26,9 @@ const Dashboard = () => {
       case 'blockchain':
         return <BlockchainData />;
       case 'transactions':
-        return <TransactionHistory />;
+        return <TransactionsTable />;
       case 'wallets':
-        return <WalletManagement />;
+        return <WalletsTable />;
       default:
         return <OverviewContent />;
     }
