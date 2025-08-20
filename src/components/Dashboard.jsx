@@ -117,7 +117,7 @@ const OverviewContent = () => {
             </div>
             <div>
               <div className="space-y-3">
-                <div className="grid grid-cols-4 gap-4 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">
+                <div className="grid grid-cols-4 gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">
                   <div>Asset</div>
                   <div className="text-right">Qty</div>
                   <div className="text-right">Mkt Val</div>
