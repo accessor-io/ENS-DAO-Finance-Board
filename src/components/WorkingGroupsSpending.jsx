@@ -50,7 +50,7 @@ const WorkingGroupsSpending = () => {
       <div className="flex gap-3 mb-3">
         <span
           onClick={() => setSelectedGroup('all')}
-          className={`text-sm cursor-pointer ${
+          className={`cursor-pointer ${
             selectedGroup === 'all'
               ? 'text-slate-900 font-medium underline'
               : 'text-slate-600 hover:text-slate-900'
@@ -62,7 +62,7 @@ const WorkingGroupsSpending = () => {
           <span
             key={group.name}
             onClick={() => setSelectedGroup(group.name)}
-            className={`text-sm cursor-pointer ${
+            className={`cursor-pointer ${
               selectedGroup === group.name
                 ? 'text-slate-900 font-medium underline'
                 : 'text-slate-600 hover:text-slate-900'
