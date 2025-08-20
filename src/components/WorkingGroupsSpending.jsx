@@ -64,7 +64,7 @@ const WorkingGroupsSpending = () => {
             <p className="text-green-100 text-sm">Active Groups</p>
           </div>
           
-          <div className="glass p-4 rounded-lg text-white">
+          <div className="glass p-4 rounded-lg text-white" style={{backgroundColor: "rgba(99, 169, 243, 0.8)"}}>
             <h3 className="text-lg font-semibold mb-1">ENS Distributed</h3>
             <p className="text-3xl font-bold">25,215</p>
             <p className="text-purple-100 text-sm">Governance Tokens</p>
