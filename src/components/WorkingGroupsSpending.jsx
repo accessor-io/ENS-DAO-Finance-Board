@@ -10,8 +10,17 @@ const WorkingGroupsSpending = () => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-      notation: 'compact',
+      minimumFractionDigits: 0,
       maximumFractionDigits: 0
+    }).format(amount);
+  };
+
+  const formatCompactCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      notation: 'compact',
+      maximumFractionDigits: 1
     }).format(amount);
   };
 
@@ -21,33 +30,39 @@ const WorkingGroupsSpending = () => {
 
   return (
     <div className="space-y-6">
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
-          <div className="text-2xl font-bold text-gray-900">{formatCurrency(q1Data.totalSpending)}</div>
-          <div className="text-sm text-gray-600">Total Spending</div>
-          <div className="text-xs text-gray-500">Q1 2025</div>
+      {/* Executive Summary */}
+      <div className="grid grid-cols-3 gap-6">
+        <div className="text-center py-4 bg-slate-50 border border-slate-200 rounded-sm">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            Total Expenditure
+          </div>
+          <div className="text-2xl font-light text-slate-900">{formatCompactCurrency(q1Data.totalSpending)}</div>
+          <div className="text-xs text-slate-600">Q1 2025 Period</div>
         </div>
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
-          <div className="text-2xl font-bold text-gray-900">{q1Data.groups.length}</div>
-          <div className="text-sm text-gray-600">Working Groups</div>
-          <div className="text-xs text-gray-500">Active</div>
+        <div className="text-center py-4 bg-slate-50 border border-slate-200 rounded-sm">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            Active Groups
+          </div>
+          <div className="text-2xl font-light text-slate-900">{q1Data.groups.length}</div>
+          <div className="text-xs text-slate-600">Operational Units</div>
         </div>
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
-          <div className="text-2xl font-bold text-gray-900">25,215</div>
-          <div className="text-sm text-gray-600">ENS Distributed</div>
-          <div className="text-xs text-gray-500">Governance Tokens</div>
+        <div className="text-center py-4 bg-slate-50 border border-slate-200 rounded-sm">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            Token Distribution
+          </div>
+          <div className="text-2xl font-light text-slate-900">25,215</div>
+          <div className="text-xs text-slate-600">ENS Governance Tokens</div>
         </div>
       </div>
 
       {/* Group Filter */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex gap-1 bg-slate-100 p-1 rounded-sm w-fit">
         <button
           onClick={() => setSelectedGroup('all')}
-          className={`px-4 py-2 rounded-md text-sm font-medium border ${
+          className={`px-4 py-2 text-sm font-medium rounded-sm transition-colors ${
             selectedGroup === 'all'
-              ? 'bg-blue-600 text-white border-blue-600'
-              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+              ? 'bg-white text-slate-900 shadow-sm'
+              : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           All Groups
@@ -56,10 +71,10 @@ const WorkingGroupsSpending = () => {
           <button
             key={group.name}
             onClick={() => setSelectedGroup(group.name)}
-            className={`px-4 py-2 rounded-md text-sm font-medium border ${
+            className={`px-4 py-2 text-sm font-medium rounded-sm transition-colors ${
               selectedGroup === group.name
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             {group.name}
@@ -67,89 +82,130 @@ const WorkingGroupsSpending = () => {
         ))}
       </div>
 
-      {/* Working Groups Table */}
-      <div className="overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      {/* Working Groups Analysis Table */}
+      <div className="border border-slate-200 rounded-sm overflow-hidden">
+        <table className="min-w-full divide-y divide-slate-200">
+          <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                 Working Group
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Spending
+              <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                Total Expenditure
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Share
+              <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                Portfolio Share
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Initiatives
+              <th className="px-6 py-4 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                Initiative Count
+              </th>
+              <th className="px-6 py-4 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                Status
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {filteredGroups.map((group) => (
-              <tr key={group.name} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="font-medium text-gray-900">{group.name}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="font-medium text-gray-900">
-                    {formatCurrency(group.spending)} {group.currency}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full"
-                        style={{ width: `${(group.spending / q1Data.totalSpending) * 100}%` }}
-                      ></div>
+          <tbody className="bg-white divide-y divide-slate-100">
+            {filteredGroups.map((group, index) => (
+              <React.Fragment key={group.name}>
+                <tr className="hover:bg-slate-25 transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="font-medium text-slate-900">{group.name}</div>
+                    <div className="text-xs text-slate-500 mt-1">
+                      Primary Focus: {group.initiatives[0]?.name || 'Various Initiatives'}
                     </div>
-                    <span className="text-sm text-gray-500">
-                      {((group.spending / q1Data.totalSpending) * 100).toFixed(1)}%
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="font-medium text-slate-900">
+                      {formatCurrency(group.spending)}
+                    </div>
+                    <div className="text-xs text-slate-500">{group.currency}</div>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end">
+                      <div className="w-20 bg-slate-200 rounded-full h-1.5 mr-3">
+                        <div 
+                          className="bg-slate-600 h-1.5 rounded-full transition-all duration-500"
+                          style={{ width: `${(group.spending / q1Data.totalSpending) * 100}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-sm font-medium text-slate-900 w-12">
+                        {((group.spending / q1Data.totalSpending) * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                      {group.initiatives.length} initiatives
                     </span>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-500">
-                    {group.initiatives.length} initiatives
-                  </div>
-                  <details className="mt-1">
-                    <summary className="text-blue-600 cursor-pointer text-sm hover:text-blue-800">
-                      View details
-                    </summary>
-                    <div className="mt-2 space-y-2">
-                      {group.initiatives.map((initiative, index) => (
-                        <div key={index} className="bg-gray-50 p-3 rounded text-sm">
-                          <div className="flex justify-between items-start mb-1">
-                            <div className="font-medium text-gray-900">{initiative.name}</div>
-                            <div className="text-gray-600">{formatCurrency(initiative.amount)}</div>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                      Active
+                    </span>
+                  </td>
+                </tr>
+                
+                {/* Expandable Initiative Details */}
+                <tr className="bg-slate-25">
+                  <td colSpan={5} className="px-6 py-4">
+                    <details className="group">
+                      <summary className="cursor-pointer text-sm text-slate-600 hover:text-slate-900 font-medium">
+                        View Initiative Breakdown
+                      </summary>
+                      <div className="mt-4 grid gap-3">
+                        {group.initiatives.map((initiative, idx) => (
+                          <div key={idx} className="bg-white border border-slate-200 rounded-sm p-4">
+                            <div className="grid grid-cols-4 gap-4 items-center">
+                              <div>
+                                <div className="font-medium text-slate-900 text-sm">{initiative.name}</div>
+                                <div className="text-xs text-slate-500 mt-1">{initiative.description}</div>
+                              </div>
+                              <div className="text-right">
+                                <div className="font-medium text-slate-900">{formatCurrency(initiative.amount)}</div>
+                                <div className="text-xs text-slate-500">Allocated</div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm text-slate-600">
+                                  {((initiative.amount / group.spending) * 100).toFixed(1)}%
+                                </div>
+                                <div className="text-xs text-slate-500">of Group Budget</div>
+                              </div>
+                              <div className="text-center">
+                                <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                  Approved
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="text-gray-600 text-xs">{initiative.description}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </details>
-                </td>
-              </tr>
+                        ))}
+                      </div>
+                    </details>
+                  </td>
+                </tr>
+              </React.Fragment>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Data Source */}
-      <div className="text-center text-sm text-gray-500 border-t pt-4">
-        Data sourced from{' '}
-        <a 
-          href={q1Data.url} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800"
-        >
-          ENS DAO Governance Forum
-        </a>
-        <div className="text-xs text-gray-400 mt-1">
-          USD conversions use end-of-day pricing from CoinGecko. Numbers rounded to nearest thousand.
+      {/* Data Attribution */}
+      <div className="border-t border-slate-200 pt-4">
+        <div className="text-center">
+          <div className="text-xs text-slate-500 mb-1">
+            Data Source: {' '}
+            <a 
+              href={q1Data.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-700 hover:text-slate-900 font-medium"
+            >
+              ENS DAO Governance Forum
+            </a>
+          </div>
+          <div className="text-xs text-slate-400">
+            Currency conversions based on end-of-day pricing from CoinGecko API. 
+            Figures rounded to nearest thousand for presentation purposes.
+          </div>
         </div>
       </div>
     </div>
