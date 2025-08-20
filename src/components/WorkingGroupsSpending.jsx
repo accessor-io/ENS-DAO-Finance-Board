@@ -31,7 +31,7 @@ const WorkingGroupsSpending = () => {
   return (
     <div className="space-y-6">
       {/* Executive Summary */}
-      <div className="grid grid-cols-3 gap-6 py-2 border-b border-slate-200 mb-3">
+      <div className="grid grid-cols-3 gap-3 py-2 border-b border-slate-200 mb-3">
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Exp</div>
           <div className="text-lg font-light text-slate-900">{formatCompactCurrency(q1Data.totalSpending)} (Q1 2025)</div>
