@@ -39,7 +39,7 @@ const Dashboard = () => {
       {/* Executive Summary Bar */}
       <div className="bg-white border-b border-slate-200">
         <div className="px-4 py-3">
-          <div className="grid grid-cols-4 gap-6">
+          <div className="grid grid-cols-4 gap-3">
             <div className="border-r border-slate-200 pr-4">
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 TOTAL AUM
