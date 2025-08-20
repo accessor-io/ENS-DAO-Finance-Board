@@ -78,19 +78,19 @@ const WorkingGroupsSpending = () => {
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                 Working Group
               </th>
-              <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                Total Expenditure
+              <th className="px-4 py-3 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                Total Exp
               </th>
-              <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                Portfolio Share
+              <th className="px-4 py-3 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                Portfolio %
               </th>
-              <th className="px-6 py-4 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                Initiative Count
+              <th className="px-4 py-3 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                Initiatives
               </th>
-              <th className="px-6 py-4 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider">
                 Status
               </th>
             </tr>
