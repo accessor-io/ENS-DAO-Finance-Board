@@ -34,15 +34,15 @@ const WorkingGroupsSpending = () => {
       <div className="grid grid-cols-3 gap-3 py-2 border-b border-slate-200 mb-3">
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Exp</div>
-          <div className="text-lg font-light text-slate-900">{formatCompactCurrency(q1Data.totalSpending)} (Q1 2025)</div>
+          <div className="font-medium text-slate-900">{formatCompactCurrency(q1Data.totalSpending)} (Q1 2025)</div>
         </div>
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Groups</div>
-          <div className="text-lg font-light text-slate-900">{q1Data.groups.length} Operational Units</div>
+          <div className="font-medium text-slate-900">{q1Data.groups.length} Operational Units</div>
         </div>
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Token Dist</div>
-          <div className="text-lg font-light text-slate-900">25,215 ENS Governance Tokens</div>
+          <div className="font-medium text-slate-900">25,215 ENS Governance Tokens</div>
         </div>
       </div>
 
