@@ -74,7 +74,7 @@ const WorkingGroupsSpending = () => {
       </div>
 
       {/* Working Groups Analysis Table */}
-      <div className="border border-slate-200 rounded-sm overflow-hidden">
+      <div className="overflow-hidden">
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
