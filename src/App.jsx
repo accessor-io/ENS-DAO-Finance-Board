@@ -14,10 +14,10 @@ function App() {
                 <span className="text-white font-bold text-lg">Ξ</span>
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-slate-900 tracking-tight">
+                <h1 className="font-semibold text-slate-900 tracking-tight">
                   ENS DAO Treasury Management
                 </h1>
-                <p className="text-xs text-slate-600 uppercase tracking-wider font-medium">
+                <p className="text-xs text-slate-600 uppercase tracking-wider">
                   Executive Financial Dashboard
                 </p>
               </div>
