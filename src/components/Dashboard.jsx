@@ -94,7 +94,7 @@ const Dashboard = () => {
       </div>
 
       {/* Content */}
-      <div className="px-8 py-8">
+      <div className="px-4 py-4">
         {renderTabContent()}
       </div>
     </div>
