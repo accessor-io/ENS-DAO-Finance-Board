@@ -108,7 +108,7 @@ const WorkingGroupsSpending = () => {
                     </span>
                   </td>
                   <td className="px-4 py-2 text-right">
-                    <span className="text-sm font-medium text-slate-900">
+                    <span className="font-medium text-slate-900">
                       {((group.spending / q1Data.totalSpending) * 100).toFixed(1)}%
                     </span>
                   </td>
