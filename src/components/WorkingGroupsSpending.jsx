@@ -58,7 +58,7 @@ const WorkingGroupsSpending = () => {
             <p className="text-blue-100 text-sm">Q1 2025</p>
           </div>
           
-          <div className="glass p-4 rounded-lg text-white">
+          <div className="glass p-4 rounded-lg text-white" style={{backgroundColor: "rgba(120, 158, 202, 1)"}}>
             <h3 className="text-lg font-semibold mb-1">Working Groups</h3>
             <p className="text-3xl font-bold">{q1Data.groups.length}</p>
             <p className="text-green-100 text-sm">Active Groups</p>
