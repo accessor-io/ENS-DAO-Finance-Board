@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import AnalyticsOverview from './AnalyticsOverview';
 import AssetTracker from './AssetTracker';
 import BlockchainData from './BlockchainData';
-import TransactionHistory from './TransactionHistory';
-import WalletManagement from './WalletManagement';
+import TransactionsTable from './TransactionsTable';
+import WalletsTable from './WalletsTable';
 import WorkingGroupsSpending from './WorkingGroupsSpending';
 
 const Dashboard = () => {
