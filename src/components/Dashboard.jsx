@@ -165,12 +165,12 @@ const OverviewContent = () => {
         </div>
 
         {/* Activity Feed */}
-        <div className="bg-white border-b border-slate-200 pb-4">
-          <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+        <div className="bg-white border-b border-slate-200 pb-2">
+          <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-2">
             Recent Activity
           </h3>
           <div>
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div className="pb-2 border-b border-slate-100">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-slate-900">Grant Disbursement - ENS Labs (2h ago)</span>
