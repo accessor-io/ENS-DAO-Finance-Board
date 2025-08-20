@@ -105,7 +105,7 @@ const OverviewContent = () => {
   return (
     <div className="space-y-4">
       {/* Portfolio Allocation & Activity */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2">
         {/* Portfolio Composition */}
         <div className="col-span-2">
           <div className="bg-white border-b border-slate-200 pb-2">
