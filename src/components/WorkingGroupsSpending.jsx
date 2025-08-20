@@ -32,7 +32,7 @@ const WorkingGroupsSpending = () => {
   return (
     <div className="space-y-6">
       {/* Header with source attribution */}
-      <div className="p-6 rounded-lg border border-gray-700 bg-gray-800">
+      <div className="p-6 rounded-lg border border-gray-700" style={{backgroundColor: "rgba(129, 132, 132, 1)"}}>
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-2xl font-bold text-white mb-2">ENS DAO Working Group Spending</h2>
@@ -174,4 +174,4 @@ const WorkingGroupsSpending = () => {
   );
 };
 
-export default WorkingGroupsSpending; 
+export default WorkingGroupsSpending;
