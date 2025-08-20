@@ -74,13 +74,13 @@ const Dashboard = () => {
 
       {/* Navigation */}
       <div className="bg-white border-b border-slate-100">
-        <div className="px-8">
-          <nav className="flex space-x-12">
+        <div className="px-4">
+          <nav className="flex space-x-8">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-6 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-4 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? 'border-slate-900 text-slate-900'
                     : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
