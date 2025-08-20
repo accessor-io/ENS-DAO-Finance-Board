@@ -10,11 +10,11 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
-    { id: 'overview', name: 'Overview', icon: '📊' },
-    { id: 'assets', name: 'Assets', icon: '💎' },
-    { id: 'blockchain', name: 'Analytics', icon: '⛓️' },
-    { id: 'transactions', name: 'Transactions', icon: '💸' },
-    { id: 'wallets', name: 'Wallets', icon: '👛' },
+    { id: 'overview', name: 'Overview' },
+    { id: 'assets', name: 'Assets' },
+    { id: 'analytics', name: 'Analytics' },
+    { id: 'transactions', name: 'Transactions' },
+    { id: 'wallets', name: 'Wallets' },
   ];
 
   const renderTabContent = () => {
@@ -23,7 +23,7 @@ const Dashboard = () => {
         return <OverviewContent />;
       case 'assets':
         return <AssetTracker />;
-      case 'blockchain':
+      case 'analytics':
         return <BlockchainData />;
       case 'transactions':
         return <TransactionsTable />;
@@ -35,100 +35,60 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 rounded-2xl p-8 mb-6 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-4xl font-bold text-white mb-2">ENS DAO Treasury</h1>
-              <p className="text-blue-200 text-lg">Real-time financial dashboard & analytics</p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header Stats Bar */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="px-6 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900">$926.8M</div>
+              <div className="text-sm text-gray-600">Total Treasury Value</div>
+              <div className="text-xs text-green-600">+2.5% this month</div>
             </div>
-            <div className="text-right">
-              <div className="text-white/80 text-sm">Total Value</div>
-              <div className="text-3xl font-bold text-white">$926.8M</div>
-              <div className="text-green-300 text-sm">↗ +2.5% this month</div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900">$840.2M</div>
+              <div className="text-sm text-gray-600">Available Balance</div>
+              <div className="text-xs text-green-600">+1.8%</div>
             </div>
-          </div>
-          
-          {/* Key Metrics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <MetricCard
-              title="Available Balance"
-              value="$840.2M"
-              change="+1.8%"
-              changeType="positive"
-              icon="💰"
-            />
-            <MetricCard
-              title="Monthly Spending"
-              value="$642K"
-              change="+12.3%"
-              changeType="neutral"
-              icon="📈"
-            />
-            <MetricCard
-              title="Active Wallets"
-              value="12"
-              change="No change"
-              changeType="neutral"
-              icon="🏦"
-            />
-            <MetricCard
-              title="Transactions"
-              value="1,247"
-              change="+156 today"
-              changeType="positive"
-              icon="⚡"
-            />
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900">$642K</div>
+              <div className="text-sm text-gray-600">Monthly Spending</div>
+              <div className="text-xs text-gray-600">+12.3%</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900">12</div>
+              <div className="text-sm text-gray-600">Active Wallets</div>
+              <div className="text-xs text-gray-600">No change</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-1 mb-6">
-        <div className="flex flex-wrap gap-1">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-lg transform scale-105'
-                  : 'text-gray-300 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              <span className="text-lg">{tab.icon}</span>
-              {tab.name}
-            </button>
-          ))}
+      {/* Navigation */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="px-6">
+          <nav className="flex space-x-8">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === tab.id
+                    ? 'border-blue-600 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </nav>
         </div>
       </div>
 
-      {/* Content Area */}
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6">
+      {/* Content */}
+      <div className="px-6 py-6">
         {renderTabContent()}
       </div>
-    </div>
-  );
-};
-
-const MetricCard = ({ title, value, change, changeType, icon }) => {
-  const changeColor = {
-    positive: 'text-green-300',
-    negative: 'text-red-300',
-    neutral: 'text-yellow-300'
-  }[changeType];
-
-  return (
-    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-2xl">{icon}</span>
-        <div className={`text-sm ${changeColor}`}>{change}</div>
-      </div>
-      <div className="text-white/80 text-sm mb-1">{title}</div>
-      <div className="text-2xl font-bold text-white">{value}</div>
     </div>
   );
 };
@@ -136,99 +96,133 @@ const MetricCard = ({ title, value, change, changeType, icon }) => {
 const OverviewContent = () => {
   return (
     <div className="space-y-6">
-      {/* Financial Overview Cards */}
+      {/* Treasury Composition */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-6 border border-white/10">
-          <h3 className="text-xl font-bold text-white mb-4">Treasury Composition</h3>
-          <div className="space-y-3">
-            <AssetRow asset="ETH" amount="234,567 ETH" value="$567.8M" percentage="61.3%" color="bg-blue-500" />
-            <AssetRow asset="USDC" amount="180.2M USDC" value="$180.2M" percentage="19.5%" color="bg-green-500" />
-            <AssetRow asset="ENS" amount="12.5M ENS" value="$178.6M" percentage="19.2%" color="bg-purple-500" />
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">Treasury Composition</h3>
+          </div>
+          <div className="p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-blue-600 rounded-full mr-3"></div>
+                  <div>
+                    <div className="font-medium text-gray-900">ETH</div>
+                    <div className="text-sm text-gray-500">234,567 ETH</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-medium text-gray-900">$567.8M</div>
+                  <div className="text-sm text-gray-500">61.3%</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-green-600 rounded-full mr-3"></div>
+                  <div>
+                    <div className="font-medium text-gray-900">USDC</div>
+                    <div className="text-sm text-gray-500">180.2M USDC</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-medium text-gray-900">$180.2M</div>
+                  <div className="text-sm text-gray-500">19.5%</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-purple-600 rounded-full mr-3"></div>
+                  <div>
+                    <div className="font-medium text-gray-900">ENS</div>
+                    <div className="text-sm text-gray-500">12.5M ENS</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-medium text-gray-900">$178.6M</div>
+                  <div className="text-sm text-gray-500">19.2%</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-xl p-6 border border-white/10">
-          <h3 className="text-xl font-bold text-white mb-4">Recent Activity</h3>
-          <div className="space-y-3">
-            <ActivityItem 
-              type="Grant Payment"
-              amount="$125K"
-              recipient="ENS Labs"
-              time="2 hours ago"
-              color="bg-blue-500"
-            />
-            <ActivityItem 
-              type="Delegation Reward"
-              amount="$45K"
-              recipient="Community Pool"
-              time="5 hours ago"
-              color="bg-green-500"
-            />
-            <ActivityItem 
-              type="Infrastructure"
-              amount="$32K"
-              recipient="Cloudflare"
-              time="1 day ago"
-              color="bg-purple-500"
-            />
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+          </div>
+          <div className="p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium text-gray-900">Grant Payment</div>
+                  <div className="text-sm text-gray-500">ENS Labs</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-medium text-gray-900">$125K</div>
+                  <div className="text-sm text-gray-500">2 hours ago</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium text-gray-900">Delegation Reward</div>
+                  <div className="text-sm text-gray-500">Community Pool</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-medium text-gray-900">$45K</div>
+                  <div className="text-sm text-gray-500">5 hours ago</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium text-gray-900">Infrastructure</div>
+                  <div className="text-sm text-gray-500">Cloudflare</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-medium text-gray-900">$32K</div>
+                  <div className="text-sm text-gray-500">1 day ago</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Working Groups Section */}
-      <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-white/10">
-        <WorkingGroupsSpending />
+      {/* Working Groups */}
+      <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">Working Groups Spending</h3>
+        </div>
+        <div className="p-6">
+          <WorkingGroupsSpending />
+        </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Quick Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <QuickActionCard icon="📊" title="Generate Report" subtitle="Export analytics" />
-        <QuickActionCard icon="🔄" title="Sync Wallets" subtitle="Update balances" />
-        <QuickActionCard icon="⚙️" title="Settings" subtitle="Configure alerts" />
-        <QuickActionCard icon="📋" title="Proposals" subtitle="View governance" />
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 text-center">
+          <div className="text-lg font-semibold text-gray-900">1,247</div>
+          <div className="text-sm text-gray-500">Total Transactions</div>
+          <div className="text-xs text-green-600">+156 today</div>
+        </div>
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 text-center">
+          <div className="text-lg font-semibold text-gray-900">3</div>
+          <div className="text-sm text-gray-500">Working Groups</div>
+          <div className="text-xs text-gray-600">Active</div>
+        </div>
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 text-center">
+          <div className="text-lg font-semibold text-gray-900">25,215</div>
+          <div className="text-sm text-gray-500">ENS Distributed</div>
+          <div className="text-xs text-gray-600">Q1 2025</div>
+        </div>
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 text-center">
+          <div className="text-lg font-semibold text-gray-900">98.7%</div>
+          <div className="text-sm text-gray-500">System Uptime</div>
+          <div className="text-xs text-green-600">All systems operational</div>
+        </div>
       </div>
     </div>
   );
 };
-
-const AssetRow = ({ asset, amount, value, percentage, color }) => (
-  <div className="flex items-center justify-between">
-    <div className="flex items-center gap-3">
-      <div className={`w-3 h-3 rounded-full ${color}`}></div>
-      <div>
-        <div className="text-white font-medium">{asset}</div>
-        <div className="text-white/60 text-sm">{amount}</div>
-      </div>
-    </div>
-    <div className="text-right">
-      <div className="text-white font-medium">{value}</div>
-      <div className="text-white/60 text-sm">{percentage}</div>
-    </div>
-  </div>
-);
-
-const ActivityItem = ({ type, amount, recipient, time, color }) => (
-  <div className="flex items-center justify-between">
-    <div className="flex items-center gap-3">
-      <div className={`w-2 h-8 rounded-full ${color}`}></div>
-      <div>
-        <div className="text-white font-medium">{type}</div>
-        <div className="text-white/60 text-sm">{recipient}</div>
-      </div>
-    </div>
-    <div className="text-right">
-      <div className="text-white font-medium">{amount}</div>
-      <div className="text-white/60 text-sm">{time}</div>
-    </div>
-  </div>
-);
-
-const QuickActionCard = ({ icon, title, subtitle }) => (
-  <button className="bg-white/5 hover:bg-white/10 rounded-xl p-4 border border-white/10 transition-all duration-200 hover:scale-105 text-left">
-    <div className="text-2xl mb-2">{icon}</div>
-    <div className="text-white font-medium">{title}</div>
-    <div className="text-white/60 text-sm">{subtitle}</div>
-  </button>
-);
 
 export default Dashboard;
