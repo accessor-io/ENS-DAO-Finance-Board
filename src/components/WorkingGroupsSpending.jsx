@@ -52,7 +52,7 @@ const WorkingGroupsSpending = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="glass p-4 rounded-lg text-white">
+          <div className="glass p-4 rounded-lg text-white" style={{backgroundColor: "rgba(166, 183, 240, 0.8)"}}>
             <h3 className="text-lg font-semibold mb-1">Total Spending</h3>
             <p className="text-3xl font-bold">{formatCurrency(q1Data.totalSpending)}</p>
             <p className="text-blue-100 text-sm">Q1 2025</p>
