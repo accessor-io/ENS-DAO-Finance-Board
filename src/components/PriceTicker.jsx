@@ -53,7 +53,7 @@ export default function PriceTicker() {
 
   return (
     <div className="flex items-center justify-end">
-      <div className="flex space-x-4 text-sm">
+      <div className="flex space-x-3 text-xs">
         {pairs.map(p => badge(p.symbol))}
       </div>
     </div>
