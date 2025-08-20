@@ -40,21 +40,21 @@ const Dashboard = () => {
       <div className="bg-white border-b border-slate-200">
         <div className="px-4 py-3">
           <div className="grid grid-cols-4 gap-6">
-            <div className="border-r border-slate-200 pr-8">
+            <div className="border-r border-slate-200 pr-4">
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 TOTAL AUM
               </div>
               <div className="text-3xl font-light text-slate-900">$926.8M</div>
               <div className="text-xs text-emerald-600 font-medium">+2.5% MTD</div>
             </div>
-            <div className="border-r border-slate-200 pr-8">
+            <div className="border-r border-slate-200 pr-4">
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 LIQUID ASSETS
               </div>
               <div className="text-3xl font-light text-slate-900">$840.2M</div>
               <div className="text-xs text-emerald-600 font-medium">+1.8% MTD</div>
             </div>
-            <div className="border-r border-slate-200 pr-8">
+            <div className="border-r border-slate-200 pr-4">
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 MONTHLY OUTFLOW
               </div>
