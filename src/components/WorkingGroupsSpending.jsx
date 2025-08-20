@@ -31,27 +31,18 @@ const WorkingGroupsSpending = () => {
   return (
     <div className="space-y-6">
       {/* Executive Summary */}
-      <div className="grid grid-cols-3 gap-6">
-        <div className="text-center py-4 bg-slate-50 border border-slate-200 rounded-sm">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
-            Total Expenditure
-          </div>
-          <div className="text-2xl font-light text-slate-900">{formatCompactCurrency(q1Data.totalSpending)}</div>
-          <div className="text-xs text-slate-600">Q1 2025 Period</div>
+      <div className="grid grid-cols-3 gap-8 py-3 border-b border-slate-200 mb-4">
+        <div className="text-center">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Expenditure</div>
+          <div className="text-lg font-light text-slate-900">{formatCompactCurrency(q1Data.totalSpending)} (Q1 2025)</div>
         </div>
-        <div className="text-center py-4 bg-slate-50 border border-slate-200 rounded-sm">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
-            Active Groups
-          </div>
-          <div className="text-2xl font-light text-slate-900">{q1Data.groups.length}</div>
-          <div className="text-xs text-slate-600">Operational Units</div>
+        <div className="text-center">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Groups</div>
+          <div className="text-lg font-light text-slate-900">{q1Data.groups.length} Operational Units</div>
         </div>
-        <div className="text-center py-4 bg-slate-50 border border-slate-200 rounded-sm">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
-            Token Distribution
-          </div>
-          <div className="text-2xl font-light text-slate-900">25,215</div>
-          <div className="text-xs text-slate-600">ENS Governance Tokens</div>
+        <div className="text-center">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Token Distribution</div>
+          <div className="text-lg font-light text-slate-900">25,215 ENS Governance Tokens</div>
         </div>
       </div>
 
