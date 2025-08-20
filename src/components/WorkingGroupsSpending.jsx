@@ -47,29 +47,29 @@ const WorkingGroupsSpending = () => {
       </div>
 
       {/* Group Filter */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-sm w-fit">
-        <button
+      <div className="flex gap-4 mb-4">
+        <span
           onClick={() => setSelectedGroup('all')}
-          className={`px-4 py-2 text-sm font-medium rounded-sm transition-colors ${
+          className={`text-sm cursor-pointer ${
             selectedGroup === 'all'
-              ? 'bg-white text-slate-900 shadow-sm'
+              ? 'text-slate-900 font-medium underline'
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           All Groups
-        </button>
+        </span>
         {q1Data.groups.map((group) => (
-          <button
+          <span
             key={group.name}
             onClick={() => setSelectedGroup(group.name)}
-            className={`px-4 py-2 text-sm font-medium rounded-sm transition-colors ${
+            className={`text-sm cursor-pointer ${
               selectedGroup === group.name
-                ? 'bg-white text-slate-900 shadow-sm'
+                ? 'text-slate-900 font-medium underline'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             {group.name}
-          </button>
+          </span>
         ))}
       </div>
 
