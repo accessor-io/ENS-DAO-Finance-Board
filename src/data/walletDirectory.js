@@ -1,20 +1,13 @@
 // Canonical ENS DAO wallet directory
 // Comprehensive list of all ENS DAO wallets, multisigs, and contracts
-// Updated with live data from Alchemy API
+// Updated with correct addresses from official ENS DAO documentation
 
 export const walletDirectory = [
   // Main Treasury and Core Wallets
   {
-    address: '0xFe89cc7aBB2C4183683ab71625C4fCB7B02D44b7',
-    ensName: 'wallet.ensdao.eth',
-    label: 'ENS DAO Treasury',
-    category: 'dao-treasury',
-    manager: 'ens-dao'
-  },
-  {
-    address: '0x8f730f4aC5fd234df9993E0E317f07e44fb869C1',
+    address: '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
     ensName: null,
-    label: 'ENS DAO Main Treasury',
+    label: 'ENS DAO Wallet',
     category: 'dao-treasury',
     manager: 'ens-dao'
   },
@@ -37,23 +30,16 @@ export const walletDirectory = [
   {
     address: '0x4F2083f5fBede34C2714aFfb3105539775f7FE64',
     ensName: null,
-    label: 'Endaoment Safe',
+    label: 'ENS EnDAOment',
     category: 'endaoment',
-    manager: 'karpatkey'
-  },
-  {
-    address: '0x5f5C86f8E0eAf57Bd4c1d2F3AC03ecc8eA0AEc5b',
-    ensName: null,
-    label: 'Karpatkey Treasury',
-    category: 'karpatkey-managed',
     manager: 'karpatkey'
   },
   
   // ENS Token Contract
   {
     address: '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
-    ensName: 'token.ensdao.eth',
-    label: 'ENS Token Contract',
+    ensName: null,
+    label: 'ENS Token',
     category: 'contract',
     manager: 'ens-dao'
   },
@@ -61,7 +47,7 @@ export const walletDirectory = [
   // Working Group Multisigs
   {
     address: '0x2686A8919Df194aA7673244549E68D42C1685d03',
-    ensName: 'ecosystem.ensdao.eth',
+    ensName: null,
     label: 'ENS DAO Multisig, Eco Main',
     category: 'working-group',
     manager: 'ens-dao'
@@ -89,7 +75,7 @@ export const walletDirectory = [
   },
   {
     address: '0x91c32893216dE3eA0a55ABb9851f581d4503d39b',
-    ensName: 'metagov.ensdao.eth',
+    ensName: null,
     label: 'ENS DAO Multisig, Metagov Main',
     category: 'working-group',
     manager: 'ens-dao'
@@ -97,7 +83,7 @@ export const walletDirectory = [
   {
     address: '0xB162Bf7A7fD64eF32b787719335d06B2780e31D1',
     ensName: null,
-    label: 'ENS DAO Multisig, Metagov Stream',
+    label: 'ENS DAO Multisig, Metgov Stream',
     category: 'working-group',
     manager: 'ens-dao'
   },
@@ -111,7 +97,7 @@ export const walletDirectory = [
   {
     address: '0xebA76C907F02BA13064EDAD7876Fe51D9d856F62',
     ensName: null,
-    label: 'ENS DAO Multisig, Public Goods Large Grants',
+    label: 'ENS DAO Multisig, Public Goods, Large Grants',
     category: 'working-group',
     manager: 'ens-dao'
   },
@@ -133,7 +119,7 @@ export const walletDirectory = [
   },
   {
     address: '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5',
-    ensName: 'controller.ens.eth',
+    ensName: null,
     label: 'ETHRegistrarController 3',
     category: 'controller',
     manager: 'ens-dao'
@@ -143,77 +129,6 @@ export const walletDirectory = [
     ensName: null,
     label: 'ETHRegistrarController 4',
     category: 'controller',
-    manager: 'ens-dao'
-  },
-  
-  // ENS Core Contracts
-  {
-    address: '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85',
-    ensName: null,
-    label: 'ENS Registry',
-    category: 'contract',
-    manager: 'ens-dao'
-  },
-  {
-    address: '0x084b1c3C81545d370f3634392De611CaaBFf8148',
-    ensName: null,
-    label: 'ENS Registrar',
-    category: 'contract',
-    manager: 'ens-dao'
-  },
-  {
-    address: '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41',
-    ensName: null,
-    label: 'ENS Public Resolver',
-    category: 'contract',
-    manager: 'ens-dao'
-  },
-  
-  // Additional Treasury Wallets
-  {
-    address: '0x2B5AD9c7455a914c55B725F12bC7B14eA10B55d9',
-    ensName: null,
-    label: 'ENS DAO Treasury 2',
-    category: 'dao-treasury',
-    manager: 'ens-dao'
-  },
-  {
-    address: '0x3C5AAC016EF2F178e8699D6208796A2D67557fe2',
-    ensName: null,
-    label: 'ENS DAO Treasury 3',
-    category: 'dao-treasury',
-    manager: 'ens-dao'
-  },
-  
-  // Service Provider Wallets
-  {
-    address: '0x7Bd3d02c3c11899D8a8b8C8C8C8C8C8C8C8C8C8C',
-    ensName: null,
-    label: 'Service Provider 1',
-    category: 'service-provider',
-    manager: 'ens-dao'
-  },
-  {
-    address: '0x9C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C',
-    ensName: null,
-    label: 'Service Provider 2',
-    category: 'service-provider',
-    manager: 'ens-dao'
-  },
-  
-  // Governance Contracts
-  {
-    address: '0x323A76393544d5ecca80cd6ef2A560C6a395b7E3',
-    ensName: null,
-    label: 'ENS Governance',
-    category: 'governance',
-    manager: 'ens-dao'
-  },
-  {
-    address: '0xDbD27635A534A3d3169Ef0498beB56Fb9c937489',
-    ensName: null,
-    label: 'ENS Timelock',
-    category: 'governance',
     manager: 'ens-dao'
   }
 ];

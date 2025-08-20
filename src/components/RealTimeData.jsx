@@ -153,7 +153,7 @@ const RealTimeData = () => {
       {/* Recent Transactions */}
       {data.transactions && (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Transactions</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Transactions (All Wallets)</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -179,7 +179,7 @@ const RealTimeData = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.transactions.transactions?.slice(0, 10).map((tx, index) => (
+                {data.transactions.transactions?.map((tx, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <a

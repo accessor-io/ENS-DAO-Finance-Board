@@ -68,13 +68,33 @@ export const useENSData = () => {
   const fetchRecentTransfers = useCallback(async (limitPerAddress = 25) => {
     setRecentTransfers((prev) => ({ ...prev, loading: true, error: null }));
     try {
+      // Primary: Alchemy aggregator
       const transfers = await alchemyAPI.getRecentTransactionsForAddresses(ensDaoWallets, limitPerAddress);
-      setRecentTransfers({ list: transfers, loading: false, error: null });
+      if (Array.isArray(transfers) && transfers.length > 0) {
+        setRecentTransfers({ list: transfers, loading: false, error: null });
+        setLastUpdated(new Date().toISOString());
+        return;
+      }
+      // Fallback: Etherscan-based aggregation
+      const fallback = await dataService.getENSDAOTransactions(limitPerAddress * (ensDaoWallets?.length || 1));
+      const normalized = (fallback?.transactions || []).map((tx) => ({
+        hash: tx.hash,
+        from: tx.from,
+        to: tx.to,
+        asset: 'ETH',
+        value: typeof tx.value === 'string' ? parseFloat(tx.value) : 0,
+        category: 'external',
+        blockNumber: tx.blockNumber || 0,
+        timestamp: tx.timestamp || null,
+        direction: 'unknown',
+        address: null,
+      }));
+      setRecentTransfers({ list: normalized, loading: false, error: null });
       setLastUpdated(new Date().toISOString());
     } catch (err) {
       setRecentTransfers({ list: [], loading: false, error: err?.message || 'Failed to fetch transfers' });
     }
-  }, []);
+  }, [ensDaoWallets]);
 
   // Fetch transaction data
   const fetchTransactionData = useCallback(async (limit = 50) => {

@@ -17,6 +17,7 @@ import ENSNewsletters from './ENSNewsletters';
 import SafeNotes from './SafeNotes';
 import DataHexbin from './DataHexbin';
 import HexbinHeatmap from './HexbinHeatmap';
+import SchemaGraph from './SchemaGraph';
 import { ensFinancialData } from '../data/ensData';
 
 const Dashboard = () => {
@@ -69,6 +70,7 @@ const Dashboard = () => {
       tabs: [
         { id: 'analytics-overview', label: 'Analytics Overview', description: 'Analytics dashboard' },
         { id: 'real-time', label: 'Real-Time Data', description: 'Live data feeds and metrics' },
+        { id: 'schema', label: 'Schema Map', description: 'Animated schema of wallets and contracts' },
         { id: 'data-hexbin', label: 'Data Hexbin', description: 'Hexagonal data visualization' },
         { id: 'hexbin-heatmap', label: 'Hexbin Heatmap', description: 'Heatmap data analysis' }
       ]
@@ -240,6 +242,18 @@ const Dashboard = () => {
         {activeTab === 'endaoment' && <EndaomentOverview />}
         {activeTab === 'analytics-overview' && <AnalyticsOverview />}
         {activeTab === 'real-time' && <RealTimeData />}
+        {activeTab === 'schema' && (
+          <SchemaGraph
+            onNavigate={(targetTab, payload) => {
+              if (targetTab) setActiveTab(targetTab);
+              // Optionally, could set shared state/filters; kept minimal here
+              if (payload?.wallet) {
+                // No centralized filter context yet; future enhancement
+                console.log('Navigate to', targetTab, 'with wallet', payload.wallet);
+              }
+            }}
+          />
+        )}
         {activeTab === 'data-hexbin' && <DataHexbin />}
         {activeTab === 'hexbin-heatmap' && <HexbinHeatmap />}
         {activeTab === 'projects' && <ProjectTracker />}

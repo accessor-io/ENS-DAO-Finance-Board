@@ -38,7 +38,12 @@ const TransactionsTable = () => {
   };
 
   const categories = ['all', 'erc20', 'erc721', 'erc1155', 'external', 'internal'];
-  const [walletFilter, setWalletFilter] = useState('all');
+  const [walletFilter, setWalletFilter] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('selectedWalletFilter') || 'all';
+    }
+    return 'all';
+  });
 
   const { recentTransfers } = useENSData();
 
@@ -86,7 +91,13 @@ const TransactionsTable = () => {
               <select
                 id="wallet-filter"
                 value={walletFilter}
-                onChange={(e) => setWalletFilter(e.target.value)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setWalletFilter(v);
+                  if (typeof window !== 'undefined') {
+                    sessionStorage.setItem('selectedWalletFilter', v);
+                  }
+                }}
                 className="border border-gray-600 rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
               >
                 {wallets.map((w) => (
@@ -102,7 +113,7 @@ const TransactionsTable = () => {
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-gray-800">
+          <thead className="bg-gray-800 sticky top-[56px] z-10">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Transaction
@@ -126,7 +137,7 @@ const TransactionsTable = () => {
           </thead>
           <tbody className="bg-gray-900 divide-y divide-gray-700">
             {filteredTransactions.map((transaction, index) => (
-              <tr key={index} className="hover:bg-gray-800">
+              <tr key={index} className={index % 2 === 0 ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-950 hover:bg-gray-800'}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div>
                     <div className="text-sm font-medium text-white font-mono">
@@ -152,7 +163,7 @@ const TransactionsTable = () => {
                   {transaction.address ? formatAddress(transaction.address) : '—'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getCategoryColor(transaction.category)}`}>
+                  <span className={`inline-flex px-2 py-0.5 text-[11px] font-medium rounded-full ${getCategoryColor(transaction.category)}`}>
                     {transaction.category}
                   </span>
                 </td>

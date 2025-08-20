@@ -222,17 +222,26 @@ export const ensAPI = {
 export const dataService = {
   async getENSDAOTreasuryData() {
     try {
-      const treasuryAddresses = [
-        '0xFe89cc7aBB2C4183683ab71625C4fCB7B02D44b7',
-        '0x4F2083f5fBede34C2714aFfb3105539775f7FE64',
-        '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
-      ];
-
-      const balancePromises = treasuryAddresses.map(address => 
-        etherscanAPI.getAccountBalance(address)
-      );
-
-      const balances = await Promise.all(balancePromises);
+      const { walletDirectory } = await import('../data/walletDirectory');
+      const treasuryAddresses = walletDirectory
+        .filter(w => w.category !== 'contract')
+        .map(w => w.address);
+      const useAlchemy = !!(import.meta.env && import.meta.env.VITE_ALCHEMY_API_KEY && import.meta.env.VITE_ALCHEMY_API_KEY !== 'demo');
+      let balances;
+      if (useAlchemy) {
+        const { default: alchemyAPI } = await import('./alchemyAPI');
+        const ethBalances = await alchemyAPI.getETHBalances(treasuryAddresses);
+        balances = ethBalances.map(({ address, balanceEth }) => ({
+          address: address.toLowerCase(),
+          balance: String(balanceEth || 0),
+          timestamp: new Date().toISOString()
+        }));
+      } else {
+        const balancePromises = treasuryAddresses.map(address => 
+          etherscanAPI.getAccountBalance(address)
+        );
+        balances = await Promise.all(balancePromises);
+      }
       
       return {
         timestamp: new Date().toISOString(),
@@ -247,11 +256,10 @@ export const dataService = {
 
   async getENSDAOTransactions(limit = 100) {
     try {
-      const treasuryAddresses = [
-        '0xFe89cc7aBB2C4183683ab71625C4fCB7B02D44b7',
-        '0x4F2083f5fBede34C2714aFfb3105539775f7FE64',
-        '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
-      ];
+      const { walletDirectory } = await import('../data/walletDirectory');
+      const treasuryAddresses = walletDirectory
+        .filter(w => w.category !== 'contract')
+        .map(w => w.address);
 
       const transactionPromises = treasuryAddresses.map(address =>
         etherscanAPI.getTransactionHistory(address, 0, 99999999)
@@ -278,11 +286,10 @@ export const dataService = {
 
   async getENSDAOTokenHoldings() {
     try {
-      const treasuryAddresses = [
-        '0xFe89cc7aBB2C4183683ab71625C4fCB7B02D44b7',
-        '0x4F2083f5fBede34C2714aFfb3105539775f7FE64',
-        '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
-      ];
+      const { walletDirectory } = await import('../data/walletDirectory');
+      const treasuryAddresses = walletDirectory
+        .filter(w => w.category !== 'contract')
+        .map(w => w.address);
 
       const tokenPromises = treasuryAddresses.map(address =>
         etherscanAPI.getTokenTransfers(address)
