@@ -4,25 +4,47 @@ import PriceTicker from './components/PriceTicker';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+    <div className="min-h-screen bg-slate-50">
+      {/* Executive Header */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-full mx-auto px-8 py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-slate-900 rounded-sm flex items-center justify-center">
                 <span className="text-white font-bold text-lg">Ξ</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">ENS DAO Treasury</h1>
-                <p className="text-sm text-gray-600">Financial Dashboard & Analytics</p>
+                <h1 className="text-lg font-semibold text-slate-900 tracking-tight">
+                  ENS DAO Treasury Management
+                </h1>
+                <p className="text-xs text-slate-600 uppercase tracking-wider font-medium">
+                  Executive Financial Dashboard
+                </p>
               </div>
             </div>
-            <div className="flex items-center gap-6">
-              <PriceTicker />
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Live Data</span>
+            <div className="flex items-center gap-8">
+              <div className="text-right">
+                <PriceTicker />
+              </div>
+              <div className="flex items-center gap-3 px-4 py-2 bg-slate-50 rounded-sm border border-slate-200">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span className="text-xs text-slate-600 font-medium uppercase tracking-wider">
+                  Real-Time Data
+                </span>
+              </div>
+              <div className="text-right">
+                <div className="text-xs text-slate-500 uppercase tracking-wider font-medium">
+                  Last Updated
+                </div>
+                <div className="text-xs text-slate-900 font-medium">
+                  {new Date().toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZoneName: 'short'
+                  })}
+                </div>
               </div>
             </div>
           </div>
@@ -30,7 +52,7 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-full mx-auto">
         <Dashboard />
       </div>
     </div>
