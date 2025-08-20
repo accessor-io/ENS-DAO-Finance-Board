@@ -44,28 +44,28 @@ const Dashboard = () => {
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 TOTAL AUM
               </div>
-              <div className="text-2xl font-light text-slate-900">$926.8M</div>
+              <div className="text-lg font-light text-slate-900">$926.8M</div>
               <div className="text-xs text-emerald-600">+2.5% MTD</div>
             </div>
             <div className="border-r border-slate-200 pr-4">
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 LIQUID ASSETS
               </div>
-              <div className="text-2xl font-light text-slate-900">$840.2M</div>
+              <div className="text-lg font-light text-slate-900">$840.2M</div>
               <div className="text-xs text-emerald-600">+1.8% MTD</div>
             </div>
             <div className="border-r border-slate-200 pr-4">
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 MONTHLY OUTFLOW
               </div>
-              <div className="text-2xl font-light text-slate-900">$642K</div>
+              <div className="text-lg font-light text-slate-900">$642K</div>
               <div className="text-xs text-slate-600">+12.3% vs Prior</div>
             </div>
             <div>
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
                 CUSTODY ACCOUNTS
               </div>
-              <div className="text-2xl font-light text-slate-900">12</div>
+              <div className="text-lg font-light text-slate-900">12</div>
               <div className="text-xs text-slate-600">No Change</div>
             </div>
           </div>
@@ -110,7 +110,7 @@ const OverviewContent = () => {
         <div className="col-span-2">
           <div className="bg-white border-b border-slate-200 pb-2">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
+              <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wide">
                 Portfolio Composition
               </h3>
               <span className="text-xs text-slate-500">As of {new Date().toLocaleDateString()}</span>
@@ -127,36 +127,36 @@ const OverviewContent = () => {
                 <div className="grid grid-cols-4 gap-4 items-center py-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
-                    <span className="font-medium text-slate-900 text-sm">Ethereum (ETH)</span>
+                    <span className="font-medium text-slate-900">Ethereum (ETH)</span>
                   </div>
-                  <div className="text-right text-slate-900 text-sm">234,567.00</div>
-                  <div className="text-right font-medium text-slate-900 text-sm">$567,800,000</div>
+                  <div className="text-right text-slate-900">234,567.00</div>
+                  <div className="text-right font-medium text-slate-900">$567,800,000</div>
                   <div className="text-right">
-                    <span className="text-slate-900 font-medium text-sm">61.3%</span>
+                    <span className="text-slate-900 font-medium">61.3%</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-4 gap-4 items-center py-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full"></div>
-                    <span className="font-medium text-slate-900 text-sm">USD Coin (USDC)</span>
+                    <span className="font-medium text-slate-900">USD Coin (USDC)</span>
                   </div>
-                  <div className="text-right text-slate-900 text-sm">180,200,000.00</div>
-                  <div className="text-right font-medium text-slate-900 text-sm">$180,200,000</div>
+                  <div className="text-right text-slate-900">180,200,000.00</div>
+                  <div className="text-right font-medium text-slate-900">$180,200,000</div>
                   <div className="text-right">
-                    <span className="text-slate-900 font-medium text-sm">19.5%</span>
+                    <span className="text-slate-900 font-medium">19.5%</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-4 gap-4 items-center py-2">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-violet-600 rounded-full"></div>
-                    <span className="font-medium text-slate-900 text-sm">Ethereum Name Service (ENS)</span>
+                    <span className="font-medium text-slate-900">Ethereum Name Service (ENS)</span>
                   </div>
-                  <div className="text-right text-slate-900 text-sm">12,500,000.00</div>
-                  <div className="text-right font-medium text-slate-900 text-sm">$178,600,000</div>
+                  <div className="text-right text-slate-900">12,500,000.00</div>
+                  <div className="text-right font-medium text-slate-900">$178,600,000</div>
                   <div className="text-right">
-                    <span className="text-slate-900 font-medium text-sm">19.2%</span>
+                    <span className="text-slate-900 font-medium">19.2%</span>
                   </div>
                 </div>
               </div>
@@ -166,36 +166,36 @@ const OverviewContent = () => {
 
         {/* Activity Feed */}
         <div className="bg-white border-b border-slate-200 pb-2">
-          <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-2">
+          <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
             Recent Activity
           </h3>
           <div>
             <div className="space-y-2">
               <div className="pb-2 border-b border-slate-100">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-slate-900">Grant Disbursement - ENS Labs (2h ago)</span>
-                  <span className="text-sm font-medium text-slate-900">$125,000</span>
+                  <span className="font-medium text-slate-900">Grant Disbursement - ENS Labs (2h ago)</span>
+                  <span className="font-medium text-slate-900">$125,000</span>
                 </div>
               </div>
 
               <div className="pb-2 border-b border-slate-100">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-slate-900">Delegation Reward - Community Pool (5h ago)</span>
-                  <span className="text-sm font-medium text-slate-900">$45,000</span>
+                  <span className="font-medium text-slate-900">Delegation Reward - Community Pool (5h ago)</span>
+                  <span className="font-medium text-slate-900">$45,000</span>
                 </div>
               </div>
 
               <div className="pb-2 border-b border-slate-100">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-slate-900">Infrastructure Payment - Cloudflare Inc. (1d ago)</span>
-                  <span className="text-sm font-medium text-slate-900">$32,000</span>
+                  <span className="font-medium text-slate-900">Infrastructure Payment - Cloudflare Inc. (1d ago)</span>
+                  <span className="font-medium text-slate-900">$32,000</span>
                 </div>
               </div>
 
               <div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-slate-900">Operational Expense - Legal & Compliance (2d ago)</span>
-                  <span className="text-sm font-medium text-slate-900">$18,500</span>
+                  <span className="font-medium text-slate-900">Operational Expense - Legal & Compliance (2d ago)</span>
+                  <span className="font-medium text-slate-900">$18,500</span>
                 </div>
               </div>
             </div>
@@ -206,7 +206,7 @@ const OverviewContent = () => {
       {/* Working Groups Financial Analysis */}
       <div className="border-b border-slate-200 pb-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">
+          <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wide">
             Working Groups Financial Analysis
           </h3>
           <span className="text-xs text-slate-500">Q1 2025 Performance</span>
@@ -218,19 +218,19 @@ const OverviewContent = () => {
       <div className="grid grid-cols-4 gap-3 py-2">
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Txn Vol</div>
-          <div className="text-xl font-light text-slate-900">1,247 (+156 today)</div>
+          <div className="text-lg font-light text-slate-900">1,247 (+156 today)</div>
         </div>
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active WGs</div>
-          <div className="text-xl font-light text-slate-900">3 (Operational)</div>
+          <div className="text-lg font-light text-slate-900">3 (Operational)</div>
         </div>
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Gov Tokens</div>
-          <div className="text-xl font-light text-slate-900">25,215 (Q1 2025)</div>
+          <div className="text-lg font-light text-slate-900">25,215 (Q1 2025)</div>
         </div>
         <div className="text-center">
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sys Uptime</div>
-          <div className="text-xl font-light text-slate-900">99.97% (Operational)</div>
+          <div className="text-lg font-light text-slate-900">99.97% (Operational)</div>
         </div>
       </div>
     </div>
