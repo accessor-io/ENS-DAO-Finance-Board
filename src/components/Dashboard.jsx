@@ -14,6 +14,7 @@ import TaskManager from './TaskManager';
 import MilestoneTracker from './MilestoneTracker';
 import EndaomentOverview from './EndaomentOverview';
 import ENSNewsletters from './ENSNewsletters';
+import ENSDiscuss from './ENSDiscuss';
 import SafeNotes from './SafeNotes';
 import DataHexbin from './DataHexbin';
 import HexbinHeatmap from './HexbinHeatmap';
@@ -94,7 +95,8 @@ const Dashboard = () => {
     communication: {
       name: 'Communication',
       tabs: [
-        { id: 'newsletters', label: 'ENS Newsletters', description: 'Newsletter management and tracking' }
+        { id: 'newsletters', label: 'ENS Newsletters', description: 'Newsletter management and tracking' },
+        { id: 'discuss', label: 'Discuss ENS', description: 'Community forum topics and categories' }
       ]
     }
   };
@@ -263,6 +265,7 @@ const Dashboard = () => {
         {activeTab === 'expenditures' && <ExpendituresTable />}
         {activeTab === 'safe-notes' && <SafeNotes />}
         {activeTab === 'newsletters' && <ENSNewsletters />}
+        {activeTab === 'discuss' && <ENSDiscuss />}
       </div>
       </section>
     </div>

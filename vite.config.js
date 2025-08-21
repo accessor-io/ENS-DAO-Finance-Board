@@ -27,7 +27,15 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
-    open: true
+    open: true,
+    proxy: {
+      '/discuss': {
+        target: 'https://discuss.ens.domains',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/discuss/, '')
+      }
+    }
   },
   preview: {
     port: 4173,
