@@ -504,3 +504,96 @@ body {
     border: 1px solid #e5e7eb !important;
   }
 }
+
+/* Terminal-like global theme (foundation partnership look) */
+.terminal-theme {
+  background: #0b1020;
+  color: #e5f1ff;
+}
+
+.terminal-theme .glass {
+  background: rgba(10, 16, 34, 0.75);
+  border-color: rgba(88, 105, 130, 0.25);
+}
+
+.terminal-panel {
+  background: #0e1530;
+  border: 1px solid #1c2a4a;
+  border-radius: 8px;
+}
+
+.terminal-header {
+  background: #101935;
+  border-bottom: 1px solid #1c2a4a;
+}
+
+.terminal-body {
+  background: #0b132a;
+}
+
+.terminal-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.terminal-accent { color: #7cc2ff; }
+.terminal-green { color: #5af78e; }
+.terminal-yellow { color: #f3f99d; }
+.terminal-red { color: #ff6b6b; }
+.terminal-muted { color: #8ba2c0; }
+
+.terminal-border { border-color: #1c2a4a; }
+.terminal-bg { background: #0b132a; }
+.terminal-bg-2 { background: #0e1530; }
+
+/* Table overrides in terminal theme */
+.terminal-theme table thead { background: #101935; color: #cfe6ff; }
+.terminal-theme table tbody { background: #0b132a; }
+.terminal-theme th, .terminal-theme td { border-color: #1c2a4a; }
+
+/* Button overrides */
+.terminal-theme .btn-primary { background: linear-gradient(135deg, #2b6cb0 0%, #2a4365 100%); }
+.terminal-theme .btn-secondary { background: rgba(124, 194, 255, 0.08); border-color: #2a4365; color: #cfe6ff; }
+
+/* Input overrides */
+.terminal-theme .input { background: #0e1530; border-color: #1c2a4a; color: #e5f1ff; }
+.terminal-theme .input::placeholder { color: #6b84a6; }
+
+/* Chip/badge colors */
+.badge-terminal { background: rgba(124, 194, 255, 0.16); color: #7cc2ff; border: 1px solid #2a4365; }
+
+/* Tabs */
+.terminal-theme .nav-tab { color: #8bb3e6; }
+.terminal-theme .nav-tab.active { color: #7cc2ff; border-bottom-color: #2b6cb0; background: rgba(43, 108, 176, 0.08); }
+
+/* Hover rows */
+.terminal-row:hover { background: rgba(124, 194, 255, 0.06); }
+
+/* Terminal-theme overrides for common light Tailwind utilities */
+.terminal-theme .bg-white { background-color: #0e1530 !important; }
+.terminal-theme .bg-gray-50 { background-color: #0b132a !important; }
+.terminal-theme .bg-gray-100 { background-color: #101935 !important; }
+.terminal-theme .bg-gray-200 { background-color: #17223f !important; }
+
+.terminal-theme .text-gray-900 { color: #e5f1ff !important; }
+.terminal-theme .text-gray-700 { color: #cfe6ff !important; }
+.terminal-theme .text-gray-600 { color: #a3bbd9 !important; }
+.terminal-theme .text-gray-500 { color: #8ba2c0 !important; }
+.terminal-theme .text-gray-400 { color: #7a93b3 !important; }
+
+.terminal-theme .border-gray-200 { border-color: #1c2a4a !important; }
+.terminal-theme .border-gray-300 { border-color: #23406d !important; }
+.terminal-theme .divide-gray-200 { border-color: #1c2a4a !important; }
+
+/* Light status backgrounds mapped to subtle dark tints */
+.terminal-theme .bg-blue-50 { background-color: rgba(43, 108, 176, 0.12) !important; }
+.terminal-theme .bg-green-50 { background-color: rgba(34, 197, 94, 0.12) !important; }
+.terminal-theme .bg-purple-50 { background-color: rgba(139, 92, 246, 0.12) !important; }
+.terminal-theme .bg-yellow-50 { background-color: rgba(245, 158, 11, 0.12) !important; }
+.terminal-theme .bg-orange-50 { background-color: rgba(249, 115, 22, 0.12) !important; }
+.terminal-theme .bg-red-50 { background-color: rgba(239, 68, 68, 0.12) !important; }
+
+/* Table and list row hover */
+.terminal-theme tr:hover, .terminal-theme .hover\:bg-gray-50:hover { background-color: rgba(124, 194, 255, 0.06) !important; }
